@@ -1,4 +1,4 @@
-# Your startup name here
+# Movie Ratings Hub
 
 [My Notes](notes.md)
 
@@ -18,45 +18,74 @@ A brief description of the application here. Lorem ipsum dolor sit amet, consect
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] Proper use of Markdown
-- [ ] A concise and compelling elevator pitch
-- [ ] Description of key features
-- [ ] Description of how you will use each technology
-- [ ] One or more rough sketches of your application. Images must be embedded in this file using Markdown image references.
+- [x] Proper use of Markdown
+- [x] A concise and compelling elevator pitch
+- [x] Description of key features
+- [x] Description of how you will use each technology
+- [x] One or more rough sketches of your application. Images must be embedded in this file using Markdown image references.
 
 ### Elevator pitch
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Tired of missing out on hidden gems?? Movie Ratings Hub is your personalized cinema companion that helps you make informed watching decisions. Unlike generic rating sites, our platform creates a tailored experience by connecting you with your friends and family in a real-time chat environment. Rate and review movies you've watched, discover recommendations based on your preferences, and join vibrant discussions about your favorite blockbusters and indie masterpieces. Movie Ratings Hub helps you cut through the noise and keep track of your favorite movies.
 
 ### Design
 
-![Design image](placeholder.png)
+![Design image](images/movieHubSpec.png)
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Here is a sequence diagram that shows how to people would interact with the backend
 
 ```mermaid
 sequenceDiagram
-    actor You
-    actor Website
-    You->>Website: Replace this with your design
+    actor Sarah
+    actor Mike
+    actor Emma
+    participant Server
+
+    Sarah->>Server: Rates "Inception" 5★
+    Server-->>Mike: Updates "Inception" rating
+    Server-->>Emma: Updates "Inception" rating
+    
+    Mike->>Server: Rates "Inception" 4★
+    Server-->>Sarah: Updates "Inception" rating
+    Server-->>Emma: Updates "Inception" rating
+    
+    Emma->>Server: Rates "Inception" 5★
+    Server-->>Sarah: Updates "Inception" rating
+    Server-->>Mike: Updates "Inception" rating
 ```
 
 ### Key features
 
-- Describe your key feature
-- Describe your key feature
-- Describe your key feature
+- **Real-time Rating System** - Users can rate movies on a 5-star scale, with ratings instantly visible to all connected users. 
+
+- **Movie Discovery** - Browse and search for movies using the comprehensive database. Each movie page includes the number of films rated, seen, want to see, and favorited.
+
+- **Social Features** - Connect with friends, follow users with similar taste, and engage in movie discussions.
+
+- **Personalized Recommendations** - Get movie suggestions based of your friends ratings. 
+
+- **Watchlist Management** - Keep track of movies you want to watch, organize them into custom lists.
 
 ### Technologies
 
 I am going to use the required technologies in the following ways.
 
-- **HTML** - Description here
-- **CSS** - Description here
-- **React** - Description here
-- **Service** - Description here
-- **DB/Login** - Description here
-- **WebSocket** - Description here
+- **HTML** - Uses semantic HTML structure for the application. Six main HTML pages: login, sign up, home, search, chat, profile. Hyperlinks to all pages.
+
+- **CSS** - Clean styling with a focus on movie posters and color scheme. Uses whitespace neatly and a grid layout.
+
+- **React** - Provides authentication, rating system, and profile management. Uses React Router for navigation between pages.
+
+- **Service** - Backend service with endpoints for:
+  - Login
+  - Movie search and details
+  - Rating submission
+  - Watchlist management
+  - Friend connections
+
+- **DB/Login** - Store user profiles, movie ratings, and watchlists in database. Secure registration and login system. Stores encrypted credentials.
+
+- **WebSocket** - Real-time updates when friends rate movies or modify their watchlists. 
 
 ## 🚀 AWS deliverable
 
