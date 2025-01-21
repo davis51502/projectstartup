@@ -52,3 +52,8 @@
     └── styles
         └── styles.css
 
+
+1/21/25 
+sudo systemctl daemon-reload - forces files to be re-read and update its internal state 
+sudo systemctl restart caddy - uses the latest settings changed (when I changed :80 to movieratings.click)
+
