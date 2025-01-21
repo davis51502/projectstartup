@@ -18,6 +18,6 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 
 ## Learning 
-[things that I have learned during this project](organized_notes/contributing.md)
+[things that I have learned during this project](organizedNotes/contributing.md)
 [notes taken in during class](organized_notes/inClassNotes.md)
 

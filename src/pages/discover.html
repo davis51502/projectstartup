@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discover - Movie Ratings Hub</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Movie Ratings Hub</div>
+            <ul class="nav-links">
+                <li><a href="../pages/index.html">Home</a></li>
+                <li><a href="../pages/discover.html">Discover</a></li>
+                <li><a href="../pages/watchlist.html">Watchlist</a></li>
+                <li><a href="../pages/profile.html">Profile</a></li>
+            </ul>
+            <button class="login-btn">Login</button>
+        </nav>
+    </header>
+
+    <main>
+        <section class="discover-section">
+            <h1>Discover New Movies</h1>
+            <div class="filters">
+                <select id="genre-filter">
+                    <option value="">All Genres</option>
+                    <option value="action">Action</option>
+                    <option value="comedy">Comedy</option>
+                    <option value="drama">Drama</option>
+                </select>
+                <select id="year-filter">
+                    <option value="">All Years</option>
+                    <option value="2024">2024</option>
+                    <option value="2023">2023</option>
+                    <option value="2022">2022</option>
+                </select>
+            </div>
+            <div class="movie-grid">
+                <!-- Movies will be dynamically added here -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Movie Ratings Hub. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html> 

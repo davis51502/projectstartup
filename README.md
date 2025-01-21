@@ -30,7 +30,7 @@ Tired of missing out on hidden gems?? Movie Ratings Hub is your personalized cin
 
 ### Design
 
-![Design image](images/movieHubSpec.png)
+![Design image](src/images/movieHubSpec.png)
 
 Here is a sequence diagram that shows how to people would interact with the backend
 
