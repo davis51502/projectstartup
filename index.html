@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Ratings Hub</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <i class="fas fa-film"></i>
+                <span>Movie Ratings Hub</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../discover.html">Discover</a></li>
+                <li><a href="../watchlist.html">Watchlist</a></li>
+                <li><a href="../profile.html">Profile</a></li>
+            </ul>
+            <div class="login-container">
+                <form class="login-form">
+                    <input type="text" placeholder="Username" required>
+                    <input type="password" placeholder="Password" required>
+                    <div class="button-group">
+                        <button type="submit" class="login-btn">Login</button>
+                        <button type="button" class="create-btn">Create</button>
+                    </div>
+                </form>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="discover-section">
+            <h1>Discover Your Next Favorite Movie</h1>
+            <div class="search-container">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search for movies...">
+                    <button class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <div class="filters">
+                    <select id="genre-filter">
+                        <option value="">All Genres</option>
+                        <option value="action">Action</option>
+                        <option value="comedy">Comedy</option>
+                        <option value="drama">Drama</option>
+                        <option value="horror">Horror</option>
+                        <option value="sci-fi">Sci-Fi</option>
+                    </select>
+                    <select id="year-filter">
+                        <option value="">All Years</option>
+                        <option value="2020-2025">2020's</option>
+                        <option value="2010-2019">2010's</option>
+                        <option value="2000-2009">2000's</option>
+                        <option value="1990-1999">1990's</option>
+                        <option value="1980-1989">1980's</option>
+                    </select>
+                </div>
+            </div>
+            <div class="movie-grid">
+                <!-- Movies will be dynamically added here -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Movie Ratings Hub. Created by Davis Wollesen - 
+            <a href="https://github.com/davis51502/projectstartup" target="_blank">
+                <i class="fab fa-github"></i> GitHub
+            </a>
+        </p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html> 
