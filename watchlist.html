@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watchlist - Movie Ratings Hub</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <i class="fas fa-film"></i>
+                <span>Movie Ratings Hub</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="discover.html">Discover</a></li>
+                <li><a href="watchlist.html">Watchlist</a></li>
+                <li><a href="profile.html">Profile</a></li>
+            </ul>
+            <div class="login-container">
+                <form class="login-form">
+                    <input type="text" placeholder="Username" required>
+                    <input type="password" placeholder="Password" required>
+                    <div class="button-group">
+                        <button type="submit" class="login-btn">Login</button>
+                        <button type="button" class="create-btn">Create</button>
+                    </div>
+                </form>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="watchlist-section">
+            <h2>My Watchlist</h2>
+            <div class="movie-list">
+                <div class="movie-card">
+                    <h3>Inception</h3>
+                    <p>Added: May 15, 2024</p>
+                </div>
+                <div class="movie-card">
+                    <h3>The Dark Knight</h3>
+                    <p>Added: Jan 10, 2024</p>
+                </div>
+            </div>
+        </section> 
+        <section class="realtime-updates">
+            <h2>Recent Activity</h2>
+            <div class="activity-feed">
+                <div class="activity">
+                    <span class="time">3 min ago</span>
+                    <span class="event">Davey rated Interstellar ★★★★★</span>
+                </div>
+                <div class="activity">
+                    <span class="time">2 min ago</span>
+                    <span class="event">Mike added Oppenheimer to watchlist</span>
+                </div>
+                <div class="activity">
+                    <span class="time">5 min ago</span>
+                    <span class="event">Josh rated Barbie ★★★★</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Movie Ratings Hub. Created by Davis Wollesen - 
+            <a href="https://github.com/davis51502/projectstartup" target="_blank">
+                <i class="fab fa-github"></i> GitHub
+            </a>
+        </p>
+    </footer>
+
+    <script src="../scripts/script.js"></script>
+</body>
+</html> 
