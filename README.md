@@ -2,7 +2,7 @@
 
 [My Notes](notes.md)
 
-Movie Ratings Hub is a dynamic web application that brings friends together through their shared love of cinema. Users can rate movies, create personalized watchlists, and discover new films through their friend's recommendations.
+Movie Ratings Hub is a dynamic web application that brings friends together through their shared love of cinema. Users can rate movies, create personalized watchlists, and discover new films through their social network's recommendations. The platform features real-time updates when friends rate movies, making it easy to see what your trusted circle thinks about the latest releases. Whether you're a casual viewer looking for your next weekend watch or a film enthusiast wanting to share your insights, Movie Ratings Hub provides an engaging space to explore, discuss, and celebrate the world of movies.
 
 
 > [!NOTE]
@@ -91,21 +91,21 @@ I am going to use the required technologies in the following ways.
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Server deployed and accessible with custom domain name** - [My server link](https://yourdomainnamehere.click).
+- [x] **Server deployed and accessible with custom domain name** - [My server link](https://startup.movieratings.click).
 
 ## 🚀 HTML deliverable
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **HTML pages** - I did not complete this part of the deliverable.
-- [ ] **Proper HTML element usage** - I did not complete this part of the deliverable.
-- [ ] **Links** - I did not complete this part of the deliverable.
-- [ ] **Text** - I did not complete this part of the deliverable.
-- [ ] **3rd party API placeholder** - I did not complete this part of the deliverable.
-- [ ] **Images** - I did not complete this part of the deliverable.
-- [ ] **Login placeholder** - I did not complete this part of the deliverable.
-- [ ] **DB data placeholder** - I did not complete this part of the deliverable.
-- [ ] **WebSocket placeholder** - I did not complete this part of the deliverable.
+- [x] **HTML pages** - Four HTML pages created: index.html (home), discover.html, watchlist.html, and profile.html. 
+- [x] **Proper HTML element usage** - Used nav, header, main, section, footer throughout the HTML. Structured forms for login and search.
+- [x] **Links** - Navigation links between all pages, GitHub profile link in footer, and links for movie interactions. 
+- [x] **Text** - Clear headings and descriptive text throughout. 
+- [x] **3rd party API placeholder** - Search functionality prepared for future (movie database) API integration. Filter options ready for dynamic content.
+- [x] **Images** - Profile picture placeholder in profile page, movie poster placeholders in watchlist page. 
+- [x] **Login placeholder** - Login form implemented with username/password inputs and create account option. Positioned in navigation area of all pages.
+- [x] **DB data placeholder** - Top rated movies section displays movie ratings and vote counts. Watchlist shows saved movies with dates.
+- [x] **WebSocket placeholder** - Real-time activity feed showing recent user actions like ratings and watchlist additions. 
 
 ## 🚀 CSS deliverable
 
