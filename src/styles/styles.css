@@ -8,7 +8,8 @@
 body {
     font-family: 'Arial', sans-serif;
     line-height: 1.6;
-    background-color: #bd0909;
+    background-color: #ffffff;
+    color: #333; 
 }
 
 /* Header and Navigation */
@@ -25,4 +26,30 @@ nav {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+}
+
+
+
+.nav-links a {
+    color: rgb(255, 255, 255) !important; 
+    
+}
+
+.rated-movie {
+    color: #000000;
+}
+
+
+.text-primary {
+    color: #333 !important;
+}
+
+
+a {
+    color: #3498db;
+}
+
+
+footer {
+    color: rgb(0, 0, 0);
 }
