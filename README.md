@@ -111,12 +111,12 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Header, footer, and main content body** - I did not complete this part of the deliverable.
-- [ ] **Navigation elements** - I did not complete this part of the deliverable.
-- [ ] **Responsive to window resizing** - I did not complete this part of the deliverable.
-- [ ] **Application elements** - I did not complete this part of the deliverable.
-- [ ] **Application text content** - I did not complete this part of the deliverable.
-- [ ] **Application images** - I did not complete this part of the deliverable.
+- [x] **Header, footer, and main content body** - Created headers with Movie Ratings Hub navigation and unique look. Added styled footer and main content uses bootsrap grid for organization.
+- [x] **Navigation elements** - Created a responsive design for navagation bar with dropdown menu for mobile and styled login form.
+- [x] **Responsive to window resizing** - All pages are responsive using boostrap's grid and media functionalities. Navigation resizes to hamburger menu on mobile.
+- [x] **Application elements** - Added styled placeholders for movies and profile info. Hover effects and animations addded to buttons.
+- [x] **Application text content** - Used Inter font family and readable text contrast ratios. Added icons as well.
+- [x] **Application images** - Added hover effects on images and proper sizing for movie posters and profile pictures. 
 
 ## 🚀 React part 1: Routing deliverable
 
