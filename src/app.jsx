@@ -3,10 +3,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
 
 import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
-import {Home} from './home/home';
-import {Discover} from './discover/discover';
-import {Watchlist} from './watchlist/watchlist';
-import {Profile} from './profile/profile';
+import Home from './home/home';
+import Discover from './discover/discover';
+import Watchlist from './watchlist/watchlist';
+import Profile from './profile/profile';
 
 export default function App() {
   return (
