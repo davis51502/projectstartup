@@ -1,5 +1,3 @@
-// filepath: /Users/daviswollesen/Desktop/cs260/projectstartup/src/home/home.jsx
-
 import React from 'react';
 
 export default function Home() {

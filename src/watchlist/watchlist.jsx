@@ -1,5 +1,3 @@
-// filepath: /Users/daviswollesen/Desktop/cs260/projectstartup/src/watchlist/watchlist.jsx
-
 import React from 'react';
 
 export default function Watchlist() {
