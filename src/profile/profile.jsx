@@ -1,54 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile - Movie Ratings Hub</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/src/styles/styles.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
-</head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <div class="container">
-                <a class="navbar-brand" href="#">
-                    <i class="fas fa-film"></i>
-                    <span>Movie Ratings Hub</span>
-                </a>
-                <div class="dropdown d-lg-none">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" 
-                            data-bs-toggle="dropdown" 
-                            aria-expanded="false">
-                        Menu
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end shadow">
-                        <li><a class="dropdown-item" href="index.html">Home</a></li>
-                        <li><a class="dropdown-item" href="discover.html">Discover</a></li>
-                        <li><a class="dropdown-item" href="watchlist.html">Watchlist</a></li>
-                        <li><a class="dropdown-item" href="profile.html">Profile</a></li>
-                    </ul>
-                </div>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav me-auto">
-                        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="discover.html">Discover</a></li>
-                        <li class="nav-item"><a class="nav-link" href="watchlist.html">Watchlist</a></li>
-                        <li class="nav-item"><a class="nav-link active" href="profile.html">Profile</a></li>
-                    </ul>
-                    <form class="d-flex login-form">
-                        <input class="form-control me-2" type="text" placeholder="Username" required>
-                        <input class="form-control me-2" type="password" placeholder="Password" required>
-                        <button class="btn btn-light me-2" type="submit">Login</button>
-                        <button class="btn btn-outline-light" type="button">Create</button>
-                    </form>
-                </div>
-            </div>
-        </nav>
-    </header>
+import React from 'react';
 
+export default function Profile() {
+  return (
     <main class="container py-5">
         <div class="row">
 
@@ -56,7 +9,7 @@
                 <div class="card shadow-sm">
                     <div class="card-body text-center">
                         <div class="position-relative mb-4">
-                            <img src="src/images/profilePicMan.jpeg" 
+                            <img src="public/profilePicMan.jpeg" 
                                  class="rounded-circle img-thumbnail" 
                                  alt="Profile" 
                                  style="width: 150px; height: 150px; object-fit: cover;">
@@ -108,7 +61,7 @@
                     </div>
                 </div>
 
-                <!-- recent activity -->
+
                 <div class="card shadow-sm">
                     <div class="card-header bg-white">
                         <h4 class="mb-0">Recent Activity</h4>
@@ -124,14 +77,13 @@
                                     <small class="text-muted">Jan 2025</small>
                                 </div>
                             </div>
-                            <!-- Add more  -->
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- fvorite movies section -->
         <section class="mt-5">
             <h4 class="mb-4">Favorite Movies</h4>
             <div class="row g-4">
@@ -144,17 +96,10 @@
             </div>
         </section>
     </main>
+  );
+}
 
-    <footer class="bg-primary text-white py-4 mt-5">
-        <div class="container text-center">
-            <p class="mb-0">&copy; 2025 Movie Ratings Hub. Created by Davis Wollesen - 
-                <a href="https://github.com/davis51502/projectstartup" target="_blank" class="text-light">
-                    <i class="fab fa-github"></i> GitHub
-                </a>
-            </p>
-        </div>
-    </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html> 
+
+
+
