@@ -1,4 +1,6 @@
 import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 export default function Profile() {
   return (
@@ -9,7 +11,7 @@ export default function Profile() {
             <div className="card-body text-center">
               <div className="position-relative mb-4">
                 <img
-                  src="public/profilePicMan.jpeg"
+                  src="/profilePicMan.jpeg"
                   className="rounded-circle img-thumbnail"
                   alt="Profile"
                   style={{ width: '150px', height: '150px', objectFit: 'cover' }}

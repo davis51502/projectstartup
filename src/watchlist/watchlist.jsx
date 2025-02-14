@@ -1,4 +1,6 @@
 import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 export default function Watchlist() {
   return (
@@ -8,7 +10,7 @@ export default function Watchlist() {
         <div className="row g-4">
           <div className="col-md-6 col-lg-4">
             <div className="card h-100 shadow-sm">
-              <img src="public/inception.jpeg" className="card-img-top" alt="Inception" />
+              <img src="/inception.jpeg" className="card-img-top" alt="Inception" />
               <div className="card-body">
                 <h5 className="card-title">Inception</h5>
                 <p className="card-text text-muted">
@@ -27,7 +29,7 @@ export default function Watchlist() {
           </div>
           <div className="col-md-6 col-lg-4">
             <div className="card h-100 shadow-sm">
-              <img src="src/images/darkKnight.jpeg" className="card-img-top" alt="The Dark Knight" />
+              <img src="/darkKnight.jpeg" className="card-img-top" alt="The Dark Knight" />
               <div className="card-body">
                 <h5 className="card-title">The Dark Knight</h5>
                 <p className="card-text text-muted">
