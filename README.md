@@ -122,9 +122,9 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Bundled using Vite** - I did not complete this part of the deliverable.
-- [ ] **Components** - I did not complete this part of the deliverable.
-- [ ] **Router** - Routing between login and voting components.
+- [x] **Bundled using Vite** - So amazing what Vite does. Bundling, transpiling, minifying, and HMR.
+- [x] **Components** - I have 3 components: discover(allowing to search for movies to be dynamically added to favorites,watched, or watchlist), watchlist(movies shown that are added, recent live activity of ratings), profile(holds stats and profile information and favorited movies)
+- [x] **Router** - Routing between login and voting components.
 
 ## 🚀 React part 2: Reactivity
 
