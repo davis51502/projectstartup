@@ -4,7 +4,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 
 export default function Watchlist() {
   return (
-    <main>
+    <main className ="mt-5">
       <section className="watchlist-section container py-5">
         <h2 className="mb-4">My Watchlist</h2>
         <div className="row g-4">

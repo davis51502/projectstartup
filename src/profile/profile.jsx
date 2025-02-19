@@ -4,7 +4,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 
 export default function Profile() {
   return (
-    <main className="container py-5">
+    <main className="container py-5 mt-5">
       <div className="row">
         <div className="col-lg-4 mb-4">
           <div className="card shadow-sm">

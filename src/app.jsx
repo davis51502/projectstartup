@@ -1,5 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import './app.css';
 import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
 import Home from './home/home';
@@ -54,9 +55,20 @@ export default function App() {
                 </ul>
 
                 <form className="d-flex login-form">
-
+                  <input 
+                    className="form-control me-2" 
+                    type="text" 
+                    placeholder="Username" 
+                    required
+                  />
+                  <input 
+                    className="form-control me-2" 
+                    type="password" 
+                    placeholder="Password" 
+                    required
+                  />
                   <button className="btn btn-light me-2" type="submit">Login</button>
-                  <button className="btn btn-outline-light" type="button">Create</button>
+                  <button className="btn btn-outline-light" type="button">Sign Up</button>
                 </form>
               </div>
             </div>
@@ -73,8 +85,8 @@ export default function App() {
 
         <footer className='bg-dark text-white-50'>
           <div className='container-fluid'>
-            <span className='text-reset'>Author Name(s)</span>
-            <a className='text-reset' href='https://github.com/davis51502/projectstartup'>Source</a>
+            <span className='text-reset'>Created by Davis Wollesen</span>
+            <a className='text-reset' href='https://github.com/davis51502/projectstartup'>GitHub <i className = "fab fa-github"></i></a>
           </div>
         </footer>
       </div>
