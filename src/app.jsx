@@ -9,6 +9,12 @@ import Watchlist from './watchlist/watchlist';
 import Profile from './profile/profile';
 
 export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const handleLogin = (event) => {
+    event.preventDefault();
+    setIsLoggedIn(true);
+    localStorage.setItem('isLoggedIn', true);
+  };
 
   return (
     <BrowserRouter>
@@ -53,8 +59,8 @@ export default function App() {
                     <NavLink className="nav-link" to="/profile">Profile</NavLink>
                   </li>
                 </ul>
-
-                <form className="d-flex login-form">
+                {!isLoggedIn && (
+                <form className="d-flex login-form" onSubmit={handleLogin}>
                   <input 
                     className="form-control me-2" 
                     type="text" 
@@ -69,7 +75,7 @@ export default function App() {
                   />
                   <button className="btn btn-light me-2" type="submit">Login</button>
                   <button className="btn btn-outline-light" type="button">Sign Up</button>
-                </form>
+                </form>)}
               </div>
             </div>
           </nav>
