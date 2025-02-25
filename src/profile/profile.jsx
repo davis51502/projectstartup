@@ -1,8 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 export default function Profile() {
+  const [username, setUsername] = useState('Username');
+  const [memberSince, setMemberSince] = useState('January 2025');
+  const [moviesRated, setMoviesRated] = useState(0);
+  const [watchlistCount, setWatchlistCount] = useState(0);
+  const [achievements, setAchievements] = useState(0);
+
+  useEffect(() => {
+    // Mock data fetching
+    const userData = {
+      username: 'Username',
+      memberSince: 'January 2025',
+      moviesRated: 10,
+      watchlistCount: 5,
+      achievements: 3,
+    };
+
+    setUsername(userData.username);
+    setMemberSince(userData.memberSince);
+    setMoviesRated(userData.moviesRated);
+    setWatchlistCount(userData.watchlistCount);
+    setAchievements(userData.achievements);
+  }, []);
+
   return (
     <main className="container py-5 mt-5">
       <div className="row">
@@ -20,9 +43,9 @@ export default function Profile() {
                   <i className="fas fa-camera"></i>
                 </button>
               </div>
-              <h3 className="mb-3">Username</h3>
+              <h3 className="mb-3">{username}</h3>
               <p className="text-muted mb-4">
-                <i className="far fa-calendar-alt me-2"></i>Member since January 2025
+                <i className="far fa-calendar-alt me-2"></i>Member since {memberSince}
               </p>
               <div className="d-grid gap-2">
                 <button className="btn btn-primary">
@@ -40,7 +63,7 @@ export default function Profile() {
                 <div className="card-body">
                   <i className="fas fa-star text-warning mb-2" style={{ fontSize: '24px' }}></i>
                   <h5 className="card-title mb-0">Movies Rated</h5>
-                  <p className="display-6 mb-0">0</p>
+                  <p className="display-6 mb-0">{moviesRated}</p>
                 </div>
               </div>
             </div>
@@ -49,7 +72,7 @@ export default function Profile() {
                 <div className="card-body">
                   <i className="fas fa-list text-primary mb-2" style={{ fontSize: '24px' }}></i>
                   <h5 className="card-title mb-0">Watchlist</h5>
-                  <p className="display-6 mb-0">0</p>
+                  <p className="display-6 mb-0">{watchlistCount}</p>
                 </div>
               </div>
             </div>
@@ -58,7 +81,7 @@ export default function Profile() {
                 <div className="card-body">
                   <i className="fas fa-trophy text-success mb-2" style={{ fontSize: '24px' }}></i>
                   <h5 className="card-title mb-0">Achievements</h5>
-                  <p className="display-6 mb-0">0</p>
+                  <p className="display-6 mb-0">{achievements}</p>
                 </div>
               </div>
             </div>
