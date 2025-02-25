@@ -1,8 +1,21 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 export default function Discover() {
+  const [movies, setMovies] = useState([
+    { title: "A bugs life", rating: 4.9, votes: 2400 },
+    { title: "Star Wars: A New Hope", rating: 4.8, votes: 2100 },
+    { title: "The Godfather", rating: 4.7, votes: 1900 }
+  ]); 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const randomIndex = Math.floor(Math.random() * movies.length);
+      const newMovies = [...movies]; 
+      newMovies[randomIndex].votes += 1; 
+      setMovies(newMovies);} , 5000); 
+      return () => clearInterval(interval);
+    }, [movies]); 
   return (
     <main>
       <section className="discover-section container py-5">
@@ -48,27 +61,15 @@ export default function Discover() {
           <div className="card-body">
             <h2 className="card-title mb-4">Top Rated Movies</h2>
             <div className="list-group">
-              <div className="list-group-item d-flex justify-content-between align-items-center">
+              {movies.map((movie, index) => (
+              <div key ={index} className="list-group-item d-flex justify-content-between align-items-center">
                 <div>
                   <span className="badge bg-warning text-dark me-2">★ 4.9</span>
-                  <span className="fw-bold">A Bug's Life</span>
+                  <span className="fw-bold">{movie.title}</span>
                 </div>
-                <span className="text-muted">(2.4k votes)</span>
+                <span className="text-muted">({movie.votes} votes)</span>
               </div>
-              <div className="list-group-item d-flex justify-content-between align-items-center">
-                <div>
-                  <span className="badge bg-warning text-dark me-2">★ 4.8</span>
-                  <span className="fw-bold">Star Wars: A New Hope</span>
-                </div>
-                <span className="text-muted">(2.1k votes)</span>
-              </div>
-              <div className="list-group-item d-flex justify-content-between align-items-center">
-                <div>
-                  <span className="badge bg-warning text-dark me-2">★ 4.7</span>
-                  <span className="fw-bold">The Godfather</span>
-                </div>
-                <span className="text-muted">(1.9k votes)</span>
-              </div>
+            ))}
             </div>
           </div>
         </div>
