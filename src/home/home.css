@@ -1,0 +1,14 @@
+.card {
+    width: 100%;
+    margin-bottom: 20px;
+}
+.card-body {
+    text-align: center; 
+}
+.card-title {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+.card-text {
+    font-size: 1.2rem;
+}

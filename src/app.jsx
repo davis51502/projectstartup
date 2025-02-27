@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './app.css';
@@ -7,13 +7,27 @@ import Home from './home/home';
 import Discover from './discover/discover';
 import Watchlist from './watchlist/watchlist';
 import Profile from './profile/profile';
+import Login from './login/Login';
 
 export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  const handleLogin = (event) => {
-    event.preventDefault();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const storedLoginStatus = localStorage.getItem('isLoggedIn');
+    if (storedLoginStatus) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  const handleLogin = (user) => {
     setIsLoggedIn(true);
     localStorage.setItem('isLoggedIn', true);
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('user');
   };
 
   return (
@@ -50,42 +64,42 @@ export default function App() {
                     <NavLink className="nav-link" to="/">Home</NavLink>
                   </li>
                   <li className="nav-item">
-                    <NavLink className="nav-link" to="/discover">Discover</NavLink>
-                  </li>
+                    <NavLink className="nav-link" to="/discover">Discover</NavLink></li>
                   <li className="nav-item">
-                    <NavLink className="nav-link" to="/watchlist">Watchlist</NavLink>
-                  </li>
+                    <NavLink className="nav-link" to="/watchlist">Watchlist</NavLink></li>
                   <li className="nav-item">
-                    <NavLink className="nav-link" to="/profile">Profile</NavLink>
-                  </li>
+                    <NavLink className="nav-link" to="/profile">Profile</NavLink></li>
                 </ul>
-                {!isLoggedIn && (
-                <form className="d-flex login-form" onSubmit={handleLogin}>
-                  <input 
-                    className="form-control me-2" 
-                    type="text" 
-                    placeholder="Username" 
-                    required
-                  />
-                  <input 
-                    className="form-control me-2" 
-                    type="password" 
-                    placeholder="Password" 
-                    required
-                  />
-                  <button className="btn btn-light me-2" type="submit">Login</button>
-                  <button className="btn btn-outline-light" type="button">Sign Up</button>
-                </form>)}
+                {isLoggedIn ? (
+                  <button className="btn btn-outline-light" onClick={handleLogout}>Logout</button>
+                ) : (
+                  <form className="d-flex login-form" onSubmit={handleLogin}>
+                    <input 
+                      className="form-control me-2" 
+                      type="text" 
+                      placeholder="Username" 
+                      required
+                    />
+                    <input 
+                      className="form-control me-2" 
+                      type="password" 
+                      placeholder="Password" 
+                      required
+                    />
+                    <button className="btn btn-light me-2" type="submit">Login</button>
+                    <button className="btn btn-outline-light" type="button">Sign Up</button>
+                  </form>
+                )}
               </div>
             </div>
           </nav>
         </header>
 
         <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/discover' element={<Discover />} />
-          <Route path='/watchlist' element={<Watchlist />} />
-          <Route path='/profile' element={<Profile />} />
+          <Route path='/' element={isLoggedIn ? <Home /> : <Login onLogin={handleLogin} />} />
+          <Route path='/discover' element={isLoggedIn ? <Discover /> : <Login onLogin={handleLogin} />} />
+          <Route path='/watchlist' element={isLoggedIn ? <Watchlist /> : <Login onLogin={handleLogin} />} />
+          <Route path='/profile' element={isLoggedIn ? <Profile /> : <Login onLogin={handleLogin} />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
 

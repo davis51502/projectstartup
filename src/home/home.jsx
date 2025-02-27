@@ -1,15 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import movieQuote from 'popular-movie-quotes';
+import './home.css';
 
 export default function Home() {
+  const [quotes, setQuotes] = useState([]);
+
+  useEffect(() => {
+    // Fetch some random quotes
+    const fetchedQuotes = movieQuote.getSomeRandom(10);
+    setQuotes(fetchedQuotes);
+  }, []);
+
   return (
     <main>
       <section className="discover-section container py-5">
         <h1 className="mb-4">Discover Your Next Favorite Movie</h1>
         <div className="card shadow-sm mb-4">
           <div className="card-body">
-            <div className="row g-3">
+            <div className="row g-2">
               <div className="col-12">
                 <div className="input-group">
                   <input type="text" className="form-control" placeholder="Search for movies..." />
@@ -18,7 +28,7 @@ export default function Home() {
                   </button>
                 </div>
               </div>
-              <div className="col-md-6">
+              <div className="col-lg-4 col-md-6">
                 <select className="form-select" id="genre-filter">
                   <option value="">All Genres</option>
                   <option value="action">Action</option>
@@ -28,7 +38,7 @@ export default function Home() {
                   <option value="sci-fi">Sci-Fi</option>
                 </select>
               </div>
-              <div className="col-md-6">
+              <div className="col-lg-4 col-md-6">
                 <select className="form-select" id="year-filter">
                   <option value="">All Years</option>
                   <option value="2020-2025">2020's</option>
@@ -42,7 +52,21 @@ export default function Home() {
           </div>
         </div>
         <div className="movie-grid row g-4">
-          <span className="container text-center">Movies to be dynamically added here</span>
+          {quotes.length > 0 ? (
+            quotes.map((quote, index) => (
+              <div key={index} className="col-md-10">
+                <div className="card h-100">
+                  <div className="card-body">
+                    <h5 className="card-title">{quote.movie}</h5>
+                    <p className="card-text">"{quote.quote}"</p>
+                    <p className="card-text"><small className="text-muted">{quote.year}</small></p>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <span className="container text-center">Movies to be dynamically added here</span>
+          )}
         </div>
       </section>
     </main>
