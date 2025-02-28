@@ -87,3 +87,8 @@ sudo systemctl restart caddy - uses the latest settings changed (when I changed 
 - Database data: Top rated movies section
 - WebSocket: Real-time activity feed structure
 
+2/27/25
+- how to implement dropdown filters
+- how to use 'useState' and 'useEffect' to mock out login and sign up functionality
+- 'useState' is used to manage the login state, user data, and form inputs. 
+- 'useEffect' is used to check for stored user data on component mount. 
