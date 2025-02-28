@@ -8,9 +8,11 @@ import Discover from './discover/discover';
 import Watchlist from './watchlist/watchlist';
 import Profile from './profile/profile';
 import Login from './login/Login';
+import SignUp from './signup/SignUp';
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showSignUp, setShowSignUp] = useState(false);
 
   useEffect(() => {
     const storedLoginStatus = localStorage.getItem('isLoggedIn');
@@ -28,6 +30,14 @@ export default function App() {
     setIsLoggedIn(false);
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('user');
+  };
+  const handleSignUpClick = () => {
+    setShowSignUp(true);
+  };
+  const handleSignUp = (User) => {
+    setIsLoggedIn(true);
+    localStorage.setItem('isLoggedIn', true);
+    setShowSignUp(false);
   };
 
   return (
@@ -87,7 +97,7 @@ export default function App() {
                       required
                     />
                     <button className="btn btn-light me-2" type="submit">Login</button>
-                    <button className="btn btn-outline-light" type="button">Sign Up</button>
+                    <button className="btn btn-outline-light" type="button" onClick={handleLogin}>Sign Up</button>
                   </form>
                 )}
               </div>
@@ -96,10 +106,10 @@ export default function App() {
         </header>
 
         <Routes>
-          <Route path='/' element={isLoggedIn ? <Home /> : <Login onLogin={handleLogin} />} />
-          <Route path='/discover' element={isLoggedIn ? <Discover /> : <Login onLogin={handleLogin} />} />
-          <Route path='/watchlist' element={isLoggedIn ? <Watchlist /> : <Login onLogin={handleLogin} />} />
-          <Route path='/profile' element={isLoggedIn ? <Profile /> : <Login onLogin={handleLogin} />} />
+          <Route path='/' element={isLoggedIn ? <Home /> : (showSignUp ? <SignUp onSignUp={handleSignUp} /> : <Login onLogin={handleLogin} />)} />
+          <Route path='/discover' element={isLoggedIn ? <Discover /> : (showSignUp ? <SignUp onSignUp={handleSignUp} /> : <Login onLogin={handleLogin} />)} />
+          <Route path='/watchlist' element={isLoggedIn ? <Watchlist /> : (showSignUp ? <SignUp onSignUp={handleSignUp} /> : <Login onLogin={handleLogin} />)} />
+          <Route path='/profile' element={isLoggedIn ? <Profile /> : (showSignUp ? <SignUp onSignUp={handleSignUp} /> : <Login onLogin={handleLogin} />)} />
           <Route path='*' element={<NotFound />} />
         </Routes>
 
