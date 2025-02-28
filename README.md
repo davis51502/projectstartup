@@ -130,8 +130,8 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **All functionality implemented or mocked out** - I did not complete this part of the deliverable.
-- [ ] **Hooks** - I did not complete this part of the deliverable.
+- [x] **All functionality implemented and/or mocked out** - Implemented the main functionalities for login, signup, and navigation. Mocked out the API calls for login and signup using local storage.
+- [x] **Hooks** - Utilized React hooks such as `useState` and `useEffect` to manage state and side effects in the components. For example, `useState` is used to manage the login state, user data, and form inputs, while `useEffect` is used to check for stored user data on component mount.
 
 ## 🚀 Service deliverable
 
