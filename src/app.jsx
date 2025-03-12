@@ -9,109 +9,113 @@ import Watchlist from './watchlist/watchlist';
 import Profile from './profile/profile';
 import Login from './login/Login';
 import SignUp from './signup/SignUp';
+import { AuthState } from './login/authState';
 
 export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userName, setUserName] = useState(localStorage.getItem("userName") || "");
+  const currentAuthState = userName ? AuthState.Authenticated : AuthState.Unauthenticated;
+  const [authState, setAuthState] = useState(currentAuthState);
   const [showSignUp, setShowSignUp] = useState(false);
 
   useEffect(() => {
     const storedLoginStatus = localStorage.getItem('isLoggedIn');
     if (storedLoginStatus) {
-      setIsLoggedIn(true);
+      setAuthState(AuthState.Authenticated);
     }
   }, []);
 
   const handleLogin = (user) => {
-    setIsLoggedIn(true);
+    setAuthState(AuthState.Authenticated);
     localStorage.setItem('isLoggedIn', true);
+    setUserName(user.userName);
+    localStorage.setItem("userName", user.userName);
   };
 
   const handleLogout = () => {
-    setIsLoggedIn(false);
+    setAuthState(AuthState.Unauthenticated);
     localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('user');
+    localStorage.removeItem('userName');
+    setUserName("");
   };
+
   const handleSignUpClick = () => {
     setShowSignUp(true);
   };
-  const handleSignUp = (User) => {
-    setIsLoggedIn(true);
+
+  const handleSignUp = (user) => {
+    setAuthState(AuthState.Authenticated);
     localStorage.setItem('isLoggedIn', true);
+    setUserName(user.userName);
+    localStorage.setItem("userName", user.userName);
     setShowSignUp(false);
   };
 
   return (
-    <BrowserRouter>
-      <div className='body bg-dark text-light'>
-        <header className='container-fluid'>
-          <nav className='navbar navbar-expand-lg navbar-dark bg-primary fixed-top'>
-            <div className='container'>
-              <div className='navbar-brand'>
+    <div className="body bg-dark text-light">
+      <BrowserRouter>
+        <header className="bg-dark text-light">
+          <nav className="navbar navbar-dark navbar-expand-lg bg-dark">
+            <div className="container-fluid">
+              <div className="navbar-brand">
                 <i className="fas fa-film"></i>
                 <span>Movie Ratings Hub</span>
                 <sup>&reg;</sup>
               </div>
-
-              <div className="dropdown d-lg-none">
-                <button 
-                  className="btn btn-secondary dropdown-toggle" 
-                  type="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                </button>
-                <ul className="dropdown-menu dropdown-menu-end shadow">
-                  <li><NavLink className="dropdown-item" to="/">Home</NavLink></li>
-                  <li><NavLink className="dropdown-item" to="/discover">Discover</NavLink></li>
-                  <li><NavLink className="dropdown-item" to="/watchlist">Watchlist</NavLink></li>
-                  <li><NavLink className="dropdown-item" to="/profile">Profile</NavLink></li>
-                </ul>
-              </div>
-
+              <button
+                className="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+              >
+                <span className="navbar-toggler-icon"></span>
+              </button>
               <div className="collapse navbar-collapse" id="navbarNav">
-                <ul className="navbar-nav me-auto">
+                <ul className="navbar-nav">
                   <li className="nav-item">
-                    <NavLink className="nav-link" to="/">Home</NavLink>
+                    <NavLink className="nav-link" to="/">
+                      Home
+                    </NavLink>
                   </li>
-                  <li className="nav-item">
-                    <NavLink className="nav-link" to="/discover">Discover</NavLink></li>
-                  <li className="nav-item">
-                    <NavLink className="nav-link" to="/watchlist">Watchlist</NavLink></li>
-                  <li className="nav-item">
-                    <NavLink className="nav-link" to="/profile">Profile</NavLink></li>
+                  {authState === AuthState.Authenticated && (
+                    <>
+                      <li className="nav-item">
+                        <NavLink className="nav-link" to="/discover">
+                          Discover
+                        </NavLink>
+                      </li>
+                      <li className="nav-item">
+                        <NavLink className="nav-link" to="/watchlist">
+                          Watchlist
+                        </NavLink>
+                      </li>
+                      <li className="nav-item">
+                        <NavLink className="nav-link" to="/profile">
+                          Profile
+                        </NavLink>
+                      </li>
+                    </>
+                  )}
                 </ul>
-                {isLoggedIn ? (
+                {authState === AuthState.Authenticated ? (
                   <button className="btn btn-outline-light" onClick={handleLogout}>Logout</button>
-                ) : (
-                  <form className="d-flex login-form" onSubmit={handleLogin}>
-                    <input 
-                      className="form-control me-2" 
-                      type="text" 
-                      placeholder="Username" 
-                      required
-                    />
-                    <input 
-                      className="form-control me-2" 
-                      type="password" 
-                      placeholder="Password" 
-                      required
-                    />
-                    <button className="btn btn-light me-2" type="submit">Login</button>
-                    <button className="btn btn-outline-light" type="button" onClick={handleLogin}>Sign Up</button>
-                  </form>
-                )}
+                ) : null}
               </div>
             </div>
           </nav>
         </header>
 
-        <Routes>
-          <Route path='/' element={isLoggedIn ? <Home /> : (showSignUp ? <SignUp onSignUp={handleSignUp} /> : <Login onLogin={handleLogin} />)} />
-          <Route path='/discover' element={isLoggedIn ? <Discover /> : (showSignUp ? <SignUp onSignUp={handleSignUp} /> : <Login onLogin={handleLogin} />)} />
-          <Route path='/watchlist' element={isLoggedIn ? <Watchlist /> : (showSignUp ? <SignUp onSignUp={handleSignUp} /> : <Login onLogin={handleLogin} />)} />
-          <Route path='/profile' element={isLoggedIn ? <Profile /> : (showSignUp ? <SignUp onSignUp={handleSignUp} /> : <Login onLogin={handleLogin} />)} />
-          <Route path='*' element={<NotFound />} />
-        </Routes>
+        <main className='container mt-5 pt-5'>
+          <Routes>
+            <Route path='/' element={authState === AuthState.Authenticated ? <Home /> : (showSignUp ? <SignUp onSignUp={handleSignUp} /> : <Login onLogin={handleLogin} onSignUpClick={handleSignUpClick} />)} />
+            <Route path='/discover' element={authState === AuthState.Authenticated ? <Discover /> : (showSignUp ? <SignUp onSignUp={handleSignUp} /> : <Login onLogin={handleLogin} onSignUpClick={handleSignUpClick} />)} />
+            <Route path='/watchlist' element={authState === AuthState.Authenticated ? <Watchlist /> : (showSignUp ? <SignUp onSignUp={handleSignUp} /> : <Login onLogin={handleLogin} onSignUpClick={handleSignUpClick} />)} />
+            <Route path='/profile' element={authState === AuthState.Authenticated ? <Profile /> : (showSignUp ? <SignUp onSignUp={handleSignUp} /> : <Login onLogin={handleLogin} onSignUpClick={handleSignUpClick} />)} />
+            <Route path='*' element={<NotFound />} />
+          </Routes>
+        </main>
 
         <footer className='bg-dark text-white-50'>
           <div className='container-fluid'>
@@ -119,8 +123,8 @@ export default function App() {
             <a className='text-reset' href='https://github.com/davis51502/projectstartup'>GitHub <i className = "fab fa-github"></i></a>
           </div>
         </footer>
-      </div>
-    </BrowserRouter>
+      </BrowserRouter>
+    </div>
   );
 }
 
