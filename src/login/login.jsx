@@ -1,55 +1,39 @@
-import React, { useState, useEffect } from 'react';
+import React from "react";
+import { Unauthenticated } from "./unauthenticated";
+import { Authenticated } from "./authenticated";
+import { AuthState } from "./authState";
 
-const Login = ({ onLogin }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    // Mocking a user login check
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      onLogin(JSON.parse(storedUser));
-    }
-  }, [onLogin]);
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-    // Mocking a login API call
-    if (username === 'user' && password === 'password') {
-      const user = { username };
-      localStorage.setItem('user', JSON.stringify(user));
-      onLogin(user);
-    } else {
-      setError('Invalid username or password');
-    }
-  };
-
+export function Login({ userName, authState, onAuthChange }) {
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <div>
-          <label>Username:</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+    <main className="container-fluid bg-dark text-center text-light">
+      <div className="center-group">
+        {authState !== AuthState.Unknown && (
+            <div
+              className="card custom-card mb-3 w-100"
+              style={{ maxWidth: "30rem" }}
+            >
+              <div className="card-body">
+                <h5 className="card-title fs-1">
+                  Welcome! Please log in to continue.
+                </h5>
+              </div>
+            </div>
+        )}
+        {authState === AuthState.Authenticated && (
+          <Authenticated
+            userName={userName}
+            onLogout={() => onAuthChange(userName, AuthState.Unauthenticated)}
           />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+        )}
+        {authState === AuthState.Unauthenticated && (
+          <Unauthenticated
+            userName={userName}
+            onLogin={(loginUserName) => {
+              onAuthChange(loginUserName, AuthState.Authenticated);
+            }}
           />
-        </div>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <button type="submit">Login</button>
-      </form>
-    </div>
+        )}
+      </div>
+    </main>
   );
-};
-
-export default Login;
+}
