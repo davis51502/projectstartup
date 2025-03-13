@@ -28,4 +28,6 @@ export function Authenticated(props) {
       <Button variant='btn btn-secondary' onClick={() => logout()}>
         Logout
       </Button>
-    </
+    </div>
+  );
+}

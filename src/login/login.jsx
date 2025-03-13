@@ -3,21 +3,21 @@ import { Unauthenticated } from "./unauthenticated";
 import { Authenticated } from "./authenticated";
 import { AuthState } from "./authState";
 
-export function Login({ userName, authState, onAuthChange }) {
+export function Login({ userName, authState, onAuthChange, onSignUpClick }) {
   return (
     <main className="container-fluid bg-dark text-center text-light">
       <div className="center-group">
         {authState !== AuthState.Unknown && (
-            <div
-              className="card custom-card mb-3 w-100"
-              style={{ maxWidth: "30rem" }}
-            >
-              <div className="card-body">
-                <h5 className="card-title fs-1">
-                  Welcome! Please log in to continue.
-                </h5>
-              </div>
+          <div
+            className="card custom-card mb-3 w-100"
+            style={{ maxWidth: "30rem" }}
+          >
+            <div className="card-body">
+              <h5 className="card-title fs-1">
+                Welcome! Please log in to continue.
+              </h5>
             </div>
+          </div>
         )}
         {authState === AuthState.Authenticated && (
           <Authenticated
@@ -31,6 +31,7 @@ export function Login({ userName, authState, onAuthChange }) {
             onLogin={(loginUserName) => {
               onAuthChange(loginUserName, AuthState.Authenticated);
             }}
+            onSignUpClick={onSignUpClick}
           />
         )}
       </div>

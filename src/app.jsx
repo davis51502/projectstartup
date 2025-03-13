@@ -7,7 +7,7 @@ import Home from './home/home';
 import Discover from './discover/discover';
 import Watchlist from './watchlist/watchlist';
 import Profile from './profile/profile';
-import Login from './login/Login';
+import {Login} from './login/login';
 import SignUp from './signup/SignUp';
 import { AuthState } from './login/authState';
 
@@ -130,4 +130,8 @@ export default function App() {
 
 function NotFound() {
   return (
-    <m
+    <main className='container-fluid bg-secondary text-center'>
+      404: Return to sender. Address unknown.
+    </main>
+  );
+}
