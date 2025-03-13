@@ -6,10 +6,17 @@ export function Unauthenticated({ onLogin, onSignUpClick }) {
   const [password, setPassword] = useState('');
   const [displayError, setDisplayError] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Perform login logic here
-    onLogin(email);
+    try {
+      // Perform login logic here, passing both email and password
+      await onLogin({ email, password });
+      // If successful, clear error message
+      setDisplayError(null);
+    } catch (error) {
+      // Handle login error
+      setDisplayError('Invalid email or password');
+    }
   };
 
   return (
@@ -22,7 +29,7 @@ export function Unauthenticated({ onLogin, onSignUpClick }) {
           <span className="input-group-text">@</span>
           <input
             className="form-control"
-            type="text"
+            type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="movieratings.click"
@@ -42,16 +49,15 @@ export function Unauthenticated({ onLogin, onSignUpClick }) {
         {displayError && <p className="error-msg">{displayError}</p>}
 
         <Button
-          variant="btn custom-button me-2"
+          variant="primary"
           type="submit"
           disabled={!email || !password}
         >
           Login
         </Button>
         <Button
-          variant="btn btn-secondary"
+          variant="secondary"
           onClick={onSignUpClick}
-          disabled={!email || !password}
         >
           Sign Up
         </Button>
