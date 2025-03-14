@@ -109,10 +109,10 @@ export default function App() {
 
         <main className='container mt-5 pt-5'>
           <Routes>
-            <Route path='/' element={authState === AuthState.Authenticated ? <Home /> : (showSignUp ? <SignUp onSignUp={handleSignUp} /> : <Login onLogin={handleLogin} onSignUpClick={handleSignUpClick} />)} />
-            <Route path='/discover' element={authState === AuthState.Authenticated ? <Discover /> : (showSignUp ? <SignUp onSignUp={handleSignUp} /> : <Login onLogin={handleLogin} onSignUpClick={handleSignUpClick} />)} />
-            <Route path='/watchlist' element={authState === AuthState.Authenticated ? <Watchlist /> : (showSignUp ? <SignUp onSignUp={handleSignUp} /> : <Login onLogin={handleLogin} onSignUpClick={handleSignUpClick} />)} />
-            <Route path='/profile' element={authState === AuthState.Authenticated ? <Profile /> : (showSignUp ? <SignUp onSignUp={handleSignUp} /> : <Login onLogin={handleLogin} onSignUpClick={handleSignUpClick} />)} />
+            <Route path='/' element={authState === AuthState.Authenticated ? <Home /> : (showSignUp ? <SignUp authState={authState} onSignUp={handleSignUp} /> : <Login onLogin={handleLogin} authState={authState} onSignUpClick={handleSignUpClick} />)} />
+            <Route path='/discover' element={authState === AuthState.Authenticated ? <Discover /> : (showSignUp ? <SignUp authState={authState} onSignUp={handleSignUp} /> : <Login onLogin={handleLogin} authState={authState} onSignUpClick={handleSignUpClick} />)} />
+            <Route path='/watchlist' element={authState === AuthState.Authenticated ? <Watchlist /> : (showSignUp ? <SignUp authState={authState} onSignUp={handleSignUp} /> : <Login onLogin={handleLogin} authState={authState} onSignUpClick={handleSignUpClick} />)} />
+            <Route path='/profile' element={authState === AuthState.Authenticated ? <Profile /> : (showSignUp ? <SignUp authState={authState} onSignUp={handleSignUp} /> : <Login onLogin={handleLogin} authState={authState} onSignUpClick={handleSignUpClick} />)} />
             <Route path='*' element={<NotFound />} />
           </Routes>
         </main>

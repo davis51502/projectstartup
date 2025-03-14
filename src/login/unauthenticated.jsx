@@ -32,7 +32,7 @@ export function Unauthenticated({ onLogin, onSignUpClick }) {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="movieratings.click"
+            placeholder="username"
           />
         </div>
         <div className="input-group mb-3 w-75 mx-auto">
@@ -42,7 +42,7 @@ export function Unauthenticated({ onLogin, onSignUpClick }) {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="dont use password1"
+            placeholder="password"
           />
         </div>
 

@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Unauthenticated } from "./unauthenticated";
 import { Authenticated } from "./authenticated";
 import { AuthState } from "./authState";
 
 export function Login({ userName, authState, onAuthChange, onSignUpClick }) {
+  React.useEffect(() => {
+    console.log(authState);
+  }, []);
   return (
     <main className="container-fluid bg-dark text-center text-light">
       <div className="center-group">
@@ -31,10 +34,4 @@ export function Login({ userName, authState, onAuthChange, onSignUpClick }) {
             onLogin={(loginUserName) => {
               onAuthChange(loginUserName, AuthState.Authenticated);
             }}
-            onSignUpClick={onSignUpClick}
-          />
-        )}
-      </div>
-    </main>
-  );
-}
+            onSign
