@@ -22,7 +22,7 @@ export function Unauthenticated({ onLogin, onSignUpClick }) {
   return (
     <div>
       <h2 style={{ marginBottom: "2rem" }}>
-        Login to play and be put on the leaderboard!
+        Login to rate your first movie!
       </h2>
       <form style={{ marginTop: "2rem" }} onSubmit={handleSubmit}>
         <div className="input-group mb-3 w-75 mx-auto">

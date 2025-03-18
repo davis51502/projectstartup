@@ -34,4 +34,10 @@ export function Login({ userName, authState, onAuthChange, onSignUpClick }) {
             onLogin={(loginUserName) => {
               onAuthChange(loginUserName, AuthState.Authenticated);
             }}
-            onSign
+            onSignUpClick={onSignUpClick}
+          />
+        )}
+      </div>
+    </main>
+  );
+}

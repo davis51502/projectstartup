@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 export default function Discover() {
+
   const [movies, setMovies] = useState([
     { title: "A bugs life", rating: 4.9, votes: 2400 },
     { title: "Star Wars: A New Hope", rating: 4.8, votes: 2100 },
@@ -16,6 +17,20 @@ export default function Discover() {
       setMovies(newMovies);} , 5000); 
       return () => clearInterval(interval);
     }, [movies]); 
+
+    const [movielist, setMovielist] = useState([])
+
+    function Movie() {
+      const getMovie = ()=>{
+        fetch("https://api.themoviedb.org/3/movie/550?api_key=731742d20f056a3dd4063b57224a7951")
+        .then((response) => response.json())
+        .then(json => movielist(json.results))
+      }
+      useEffect(() => {
+        getMovie();
+      }, []);
+    
+    console.log(movielist)
   return (
     <main>
       <section className="discover-section container py-5">
@@ -80,4 +95,5 @@ export default function Discover() {
       </section>
     </main>
   );
+}
 }
