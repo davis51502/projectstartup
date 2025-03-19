@@ -1,36 +1,31 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 export default function Discover() {
+  const [movies, setMovies] = useState([]);
+  const [error, setError] = useState(null);
 
-  const [movies, setMovies] = useState([
-    { title: "A bugs life", rating: 4.9, votes: 2400 },
-    { title: "Star Wars: A New Hope", rating: 4.8, votes: 2100 },
-    { title: "The Godfather", rating: 4.7, votes: 1900 }
-  ]); 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const randomIndex = Math.floor(Math.random() * movies.length);
-      const newMovies = [...movies]; 
-      newMovies[randomIndex].votes += 1; 
-      setMovies(newMovies);} , 5000); 
-      return () => clearInterval(interval);
-    }, [movies]); 
-
-    const [movielist, setMovielist] = useState([])
-
-    function Movie() {
-      const getMovie = ()=>{
-        fetch("https://api.themoviedb.org/3/movie/550?api_key=731742d20f056a3dd4063b57224a7951")
-        .then((response) => response.json())
-        .then(json => movielist(json.results))
+  // Fetch movies from the API
+  const fetchMovies = async () => {
+    try {
+      const response = await fetch(
+        "https://api.themoviedb.org/3/movie/popular?api_key=731742d20f056a3dd4063b57224a7951"
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch movies");
       }
-      useEffect(() => {
-        getMovie();
-      }, []);
-    
-    console.log(movielist)
+      const data = await response.json();
+      setMovies(data.results); // Use the `results` array from the API response
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchMovies();
+  }, []);
+
   return (
     <main>
       <section className="discover-section container py-5">
@@ -40,7 +35,11 @@ export default function Discover() {
             <div className="row g-3">
               <div className="col-12">
                 <div className="input-group">
-                  <input type="text" className="form-control" placeholder="Search for movies..." />
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Search for movies..."
+                  />
                   <button className="btn btn-primary">
                     <i className="fas fa-search"></i>
                   </button>
@@ -75,25 +74,51 @@ export default function Discover() {
         <div className="card shadow-sm mb-4">
           <div className="card-body">
             <h2 className="card-title mb-4">Top Rated Movies</h2>
-            <div className="list-group">
-              {movies.map((movie, index) => (
-              <div key ={index} className="list-group-item d-flex justify-content-between align-items-center">
-                <div>
-                  <span className="badge bg-warning text-dark me-2">★ 4.9</span>
-                  <span className="fw-bold">{movie.title}</span>
-                </div>
-                <span className="text-muted">({movie.votes} votes)</span>
+            {error ? (
+              <p className="text-danger">{error}</p>
+            ) : (
+              <div className="list-group">
+                {movies.map((movie) => (
+                  <div
+                    key={movie.id}
+                    className="list-group-item d-flex justify-content-between align-items-center"
+                  >
+                    <div>
+                      <span className="badge bg-warning text-dark me-2">
+                        ★ {movie.vote_average.toFixed(1)}
+                      </span>
+                      <span className="fw-bold">{movie.title}</span>
+                    </div>
+                    <span className="text-muted">({movie.vote_count} votes)</span>
+                  </div>
+                ))}
               </div>
-            ))}
-            </div>
+            )}
           </div>
         </div>
       </section>
 
       <section className="container mb-5">
-        <div className="row g-4" id="movie-grid"></div>
+        <div className="row g-4" id="movie-grid">
+          {movies.map((movie) => (
+            <div key={movie.id} className="col-md-3">
+              <div className="card">
+                <img
+                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                  className="card-img-top"
+                  alt={movie.title}
+                />
+                <div className="card-body">
+                  <h5 className="card-title">{movie.title}</h5>
+                  <p className="card-text">
+                    Rating: {movie.vote_average.toFixed(1)}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </section>
     </main>
   );
-}
 }
