@@ -137,11 +137,11 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Node.js/Express HTTP service** - I did not complete this part of the deliverable.
-- [ ] **Static middleware for frontend** - I did not complete this part of the deliverable.
-- [ ] **Calls to third party endpoints** - I did not complete this part of the deliverable.
-- [ ] **Backend service endpoints** - I did not complete this part of the deliverable.
-- [ ] **Frontend calls service endpoints** - I did not complete this part of the deliverable.
+- [x] **Node.js/Express HTTP service** - Created a Node.js server using Express to handle HTTP requests. The server is set up to serve static files and handle API requests.
+- [x] **Static middleware for frontend** - Configured Express to serve the React frontend using static middleware. The frontend is accessible through the root URL.
+- [x] **Calls to third party endpoints** - Integrated with a third-party movie database API to fetch movie details, ratings, and recommendations. Implemented error handling for API calls.
+- [x] **Backend service endpoints** - Developed RESTful API endpoints for user authentication, movie search, rating submission, and watchlist management. 
+- [x] **Frontend calls service endpoints** - Connected the React frontend to the backend service. Implemented API calls for login, movie search, and watchlist updates.
 
 ## 🚀 DB/Login deliverable
 

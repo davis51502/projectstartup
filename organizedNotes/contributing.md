@@ -92,3 +92,42 @@ sudo systemctl restart caddy - uses the latest settings changed (when I changed 
 - how to use 'useState' and 'useEffect' to mock out login and sign up functionality
 - 'useState' is used to manage the login state, user data, and form inputs. 
 - 'useEffect' is used to check for stored user data on component mount. 
+
+
+3/19/25
+## Introduction to Node.js
+- Node.js is a runtime environment for executing JavaScript code outside the browser.
+- Built on Chrome's V8 JavaScript engine.
+- Commonly used for building server-side applications.
+
+## Key Features
+- **Asynchronous and Event-Driven**: Handles multiple requests without blocking.
+- **Non-blocking I/O**: Efficiently handles file and network operations.
+- **Single-Threaded**: Uses a single thread with event looping for concurrency.
+
+## Core Modules
+- `fs`: File system operations (read/write files).
+- `http`: Create and manage HTTP servers.
+- `path`: Work with file and directory paths.
+- `os`: Provides information about the operating system.
+
+## Package Management
+- Uses npm (Node Package Manager) for managing dependencies.
+- Install packages using `npm install <package-name>`.
+
+## Example: Simple HTTP Server
+```javascript
+const http = require('http');
+
+const server = http.createServer((req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.end('Hello, World!\n');
+});
+
+server.listen(3000, () => {
+  console.log('Server running at http://localhost:3000/');
+});
+```
+- Run the server with `node server.js`.
+- Access it in the browser at `http://localhost:3000/`.

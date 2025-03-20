@@ -21,3 +21,14 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 [things that I have learned during this project](organizedNotes/contributing.md)
 [notes taken in during class](organized_notes/inClassNotes.md)
 
+## Frontend Notes
+
+- The frontend is responsible for the user interface and user experience.
+- Focus on responsive design and accessibility.
+
+## Backend Notes
+
+- The backend handles server-side logic, databases, and APIs.
+- Focus on scalability, security, and efficient data handling.
+- Database options: SQL (PostgreSQL, MySQL) or NoSQL (MongoDB, DynamoDB).
+- Implement authentication and authorization for secure access.
