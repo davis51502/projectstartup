@@ -81,6 +81,9 @@ export default function Discover() {
             </div>
           </div>
         </div>
+        <div className="text-center mb-4">
+          <a href="/watchlist" className="btn btn-primary">Go to Watchlist</a>
+        </div>
       </section>
 
       <section className="container mb-5">
