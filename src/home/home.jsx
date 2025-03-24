@@ -9,7 +9,7 @@ export default function Home() {
 
   useEffect(() => {
     // Fetch some random quotes
-    const fetchedQuotes = movieQuote.getSomeRandom(10);
+    const fetchedQuotes = movieQuote.getSomeRandom(8);
     setQuotes(fetchedQuotes);
   }, []);
 
@@ -17,44 +17,14 @@ export default function Home() {
     <main>
       <section className="discover-section container py-5">
         <h1 className="mb-4">Discover Your Next Favorite Movie</h1>
-        <div className="card shadow-sm mb-4">
-          <div className="card-body">
-            <div className="row g-2">
-              <div className="col-12">
-                <div className="input-group">
-                  <input type="text" className="form-control" placeholder="Search for movies..." />
-                  <button className="btn btn-primary">
-                    <i className="fas fa-search"></i>
-                  </button>
-                </div>
-              </div>
-              <div className="col-lg-4 col-md-6">
-                <select className="form-select" id="genre-filter">
-                  <option value="">All Genres</option>
-                  <option value="action">Action</option>
-                  <option value="comedy">Comedy</option>
-                  <option value="drama">Drama</option>
-                  <option value="horror">Horror</option>
-                  <option value="sci-fi">Sci-Fi</option>
-                </select>
-              </div>
-              <div className="col-lg-4 col-md-6">
-                <select className="form-select" id="year-filter">
-                  <option value="">All Years</option>
-                  <option value="2020-2025">2020's</option>
-                  <option value="2010-2019">2010's</option>
-                  <option value="2000-2009">2000's</option>
-                  <option value="1990-1999">1990's</option>
-                  <option value="1980-1989">1980's</option>
-                </select>
-              </div>
-            </div>
-          </div>
+        <div className="text-center mb-4">
+          <a href="/discover" className="btn btn-primary">Discover Now!</a>
         </div>
-        <div className="movie-grid row g-4">
+        <div className="card shadow-sm mb-4"></div>
+        <div className="movie-grid row g">
           {quotes.length > 0 ? (
             quotes.map((quote, index) => (
-              <div key={index} className="col-md-10">
+              <div key={`${quote.movie}-${index}`} className="col-md-10">
                 <div className="card h-100">
                   <div className="card-body">
                     <h5 className="card-title">{quote.movie}</h5>

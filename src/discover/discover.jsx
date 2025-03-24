@@ -72,29 +72,7 @@ export default function Discover() {
 
       <section className="movie-ratings container">
         <div className="card shadow-sm mb-4">
-          <div className="card-body">
-            <h2 className="card-title mb-4">Top Rated Movies</h2>
-            {error ? (
-              <p className="text-danger">{error}</p>
-            ) : (
-              <div className="list-group">
-                {movies.map((movie) => (
-                  <div
-                    key={movie.id}
-                    className="list-group-item d-flex justify-content-between align-items-center"
-                  >
-                    <div>
-                      <span className="badge bg-warning text-dark me-2">
-                        ★ {movie.vote_average.toFixed(1)}
-                      </span>
-                      <span className="fw-bold">{movie.title}</span>
-                    </div>
-                    <span className="text-muted">({movie.vote_count} votes)</span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          
         </div>
       </section>
 
