@@ -80,22 +80,39 @@ const verifyAuth = async (req, res, next) => {
 };
 
 // Get all movies
-apiRouter.get('/movies', verifyAuth, (_req, res) => {
-  res.send(movies);
+apiRouter.get('/movies', verifyAuth, async (_req, res) => {
+  try {
+    const movies = await DB.getMovies();
+    res.send(movies);
+  } catch (err) {
+    res.status(500).send({ msg: 'Failed to get movies', error: err.message });
+  }
 });
 
 // Add a new movie
-apiRouter.post('/movies', verifyAuth, (req, res) => {
-  const movie = req.body;
-  movies.push(movie);
-  res.send({ msg: 'Movie added successfully', movie });
+apiRouter.post('/movies', verifyAuth, async (req, res) => {
+  try {
+    const movie = req.body;
+    const addedMovie = await DB.addMovie(movie);
+    res.send({ msg: 'Movie added successfully', movie: addedMovie });
+  } catch (err) {
+    res.status(500).send({ msg: 'Failed to add movie', error: err.message });
+  }
 });
 
 // Delete a movie by ID
-apiRouter.delete('/movies/:id', verifyAuth, (req, res) => {
-  const movieId = req.params.id;
-  movies = movies.filter((movie) => movie.id !== movieId);
-  res.send({ msg: `Movie with ID ${movieId} deleted` });
+apiRouter.delete('/movies/:id', verifyAuth, async (req, res) => {
+  try {
+    const movieId = req.params.id;
+    const deletedCount = await DB.deleteMovieById(movieId);
+    if (deletedCount > 0) {
+      res.send({ msg: `Movie with ID ${movieId} deleted` });
+    } else {
+      res.status(404).send({ msg: `Movie with ID ${movieId} not found` });
+    }
+  } catch (err) {
+    res.status(500).send({ msg: 'Failed to delete movie', error: err.message });
+  }
 });
 
 // Default error handler

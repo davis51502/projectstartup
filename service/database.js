@@ -6,6 +6,7 @@ const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostna
 // Connect to the database cluster
 const client = new MongoClient(url);
 const db = client.db('movieratings');
+const userCollection = db.collection('user');
 const collection = db.collection('movies');
 
 async function main() {
