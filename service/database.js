@@ -48,7 +48,7 @@ async function main() {
   } catch (ex) {
     console.log(`Database (${url}) error: ${ex.message}`);
   } finally {
-    await client.close();
+    console.log('keep connection');
   }
 }
 
