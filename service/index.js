@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const uuid = require('uuid');
 const path = require('path');
 const app = express();
+const DB = require('./database.js');
 
 const authCookieName = 'token';
 
@@ -101,13 +102,24 @@ app.use((_req, res) => {
 // Helper functions
 async function createUser(email, password) {
   const passwordHash = await bcrypt.hash(password, 10);
-  const user = { email, password: passwordHash, token: uuid.v4() };
-  users.push(user);
+
+  const user = {
+    email: email,
+    password: passwordHash,
+    token: uuid.v4(),
+  };
+  await DB.addUser(user);
+
   return user;
 }
 
 async function findUser(field, value) {
-  return users.find((user) => user[field] === value);
+  if (!value) return null;
+
+  if (field === 'token') {
+    return DB.getUserByToken(value);
+  }
+  return DB.getUser(value);
 }
 
 function setAuthCookie(res, authToken) {
