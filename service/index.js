@@ -37,6 +37,7 @@ apiRouter.post('/auth/create', async (req, res) => {
 
 // Login an existing user
 apiRouter.post('/auth/login', async (req, res) => {
+  try {
   const user = await findUser('email', req.body.email);
   if (user && (await bcrypt.compare(req.body.password, user.password))) {
     user.token = uuid.v4();
@@ -45,25 +46,36 @@ apiRouter.post('/auth/login', async (req, res) => {
   } else {
     res.status(401).send({ msg: 'Unauthorized' });
   }
+  } catch (err){
+    res.status(500).send({ msg: 'Internal server error', error: err.message });
+  }
 });
 
 // Logout a user
 apiRouter.delete('/auth/logout', async (req, res) => {
-  const user = await findUser('token', req.cookies[authCookieName]);
-  if (user) {
-    delete user.token;
+  try {
+    const user = await findUser('token', req.cookies[authCookieName]);
+    if (user) {
+      await DB.updateUserToken(user.email, null); // Clear the token in the database
+    }
+    res.clearCookie(authCookieName);
+    res.status(204).end();
+  } catch (err) {
+    res.status(500).send({ msg: 'Failed to log out', error: err.message });
   }
-  res.clearCookie(authCookieName);
-  res.status(204).end();
 });
 
 // Middleware to verify authentication
 const verifyAuth = async (req, res, next) => {
-  const user = await findUser('token', req.cookies[authCookieName]);
-  if (user) {
-    next();
-  } else {
-    res.status(401).send({ msg: 'Unauthorized' });
+  try {
+    const user = await findUser('token', req.cookies[authCookieName]);
+    if (user) {
+      next();
+    } else {
+      res.status(401).send({ msg: 'Unauthorized' });
+    }
+  } catch (err) {
+    res.status(500).send({ msg: 'Authentication failed', error: err.message });
   }
 };
 
