@@ -9,8 +9,6 @@ const DB = require('./database.js');
 const authCookieName = 'token';
 
 // In-memory storage for users and movies
-let users = [];
-let movies = [];
 
 // The service port
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
