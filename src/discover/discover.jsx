@@ -60,11 +60,18 @@ export default function Discover() {
           title: movie.title,
           poster: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
           addedAt: new Date().toISOString(),
+          tmdbId: movie.id, // Add TMDB ID to prevent duplicates
+          overview: movie.overview,
+          rating: movie.vote_average
         }),
       });
+      
       if (!response.ok) {
-        throw new Error('Failed to add movie to watchlist');
+        const errorData = await response.json();
+        throw new Error(errorData.msg || 'Failed to add movie to watchlist');
       }
+      
+      const responseData = await response.json();
       setSuccessMessage(`"${movie.title}" added to your watchlist!`);
       setTimeout(() => setSuccessMessage(''), 3000); // Clear the success message after 3 seconds
     } catch (err) {

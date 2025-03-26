@@ -38,14 +38,15 @@ apiRouter.post('/auth/create', async (req, res) => {
 // Login an existing user
 apiRouter.post('/auth/login', async (req, res) => {
   try {
-  const user = await findUser('email', req.body.email);
-  if (user && (await bcrypt.compare(req.body.password, user.password))) {
-    user.token = uuid.v4();
-    setAuthCookie(res, user.token);
-    res.send({ email: user.email });
-  } else {
-    res.status(401).send({ msg: 'Unauthorized' });
-  }
+    const user = await findUser('email', req.body.email);
+    if (user && (await bcrypt.compare(req.body.password, user.password))) {
+      const token = uuid.v4();
+      await DB.updateUserToken(user.email, token);
+      setAuthCookie(res, token);
+      res.send({ email: user.email });
+    } else {
+      res.status(401).send({ msg: 'Unauthorized' });
+    }
   } catch (err){
     res.status(500).send({ msg: 'Internal server error', error: err.message });
   }
