@@ -33,11 +33,8 @@ async function addUser(user) {
   await userCollection.insertOne(user);
 }
 
-async function updateUserToken(email, token) {
-  await userCollection.updateOne(
-    { email: email }, 
-    { $set: { token: token } }
-  );
+async function updateUser(user) {
+  await userCollection.updateOne({ email: user.email }, { $set: user });
 }
 
 async function addMovie(movie) {
@@ -57,7 +54,7 @@ async function getMovies(query = {}, options = {}) {
 }
 
 async function deleteMovieById(movieId) {
-  const result = await collection.deleteOne({ _id: new ObjectId(movieId) });
+  const result = await collection.deleteOne({ _id: ObjectId.createFromHexString(movieId) });
   return result.deletedCount;
 }
 
@@ -65,7 +62,7 @@ module.exports = {
   getUser,
   getUserByToken,
   addUser,
-  updateUserToken,
+  updateUser,
   addMovie, 
   getMovies, 
   deleteMovieById

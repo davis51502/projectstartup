@@ -27,7 +27,7 @@ export default function Discover() {
   // Search for movies based on user input
   const searchMovies = async (query) => {
     if (!query) {
-      fetchMovies();
+      fetchMovies(); 
       return;
     }
 

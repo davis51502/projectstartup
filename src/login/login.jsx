@@ -1,32 +1,16 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Unauthenticated } from "./unauthenticated";
 import { Authenticated } from "./authenticated";
 import { AuthState } from "./authState";
 
-export function Login({ userName, authState, onAuthChange, onSignUpClick }) {
-  React.useEffect(() => {
-    console.log(authState);
-  }, []);
+
+export function Login({ userName, authState, onAuthChange }) {
   return (
-    <main className="container-fluid bg-dark text-center text-light">
+    <main className='container-fluid bg-dark text-center text-light'>
       <div className="center-group">
-        {authState !== AuthState.Unknown && (
-          <div
-            className="card custom-card mb-3 w-100"
-            style={{ maxWidth: "30rem" }}
-          >
-            <div className="card-body">
-              <h5 className="card-title fs-1">
-                Welcome! Please log in.
-              </h5>
-            </div>
-          </div>
-        )}
+        {authState !== AuthState.Unknown && <h5 className="card-title fs-1">Welcome, Please Log in!</h5>}
         {authState === AuthState.Authenticated && (
-          <Authenticated
-            userName={userName}
-            onLogout={() => onAuthChange(userName, AuthState.Unauthenticated)}
-          />
+          <Authenticated userName={userName} onLogout={() => onAuthChange(userName, AuthState.Unauthenticated)} />
         )}
         {authState === AuthState.Unauthenticated && (
           <Unauthenticated
@@ -34,7 +18,6 @@ export function Login({ userName, authState, onAuthChange, onSignUpClick }) {
             onLogin={(loginUserName) => {
               onAuthChange(loginUserName, AuthState.Authenticated);
             }}
-            onSignUpClick={onSignUpClick}
           />
         )}
       </div>

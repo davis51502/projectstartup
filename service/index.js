@@ -2,7 +2,6 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcryptjs');
 const uuid = require('uuid');
-const path = require('path');
 const app = express();
 const DB = require('./database.js');
 
@@ -34,55 +33,40 @@ const verifyAuth = async (req, res, next) => {
 
 // Create a new user
 apiRouter.post('/auth/create', async (req, res) => {
-  try {
-    // Check if user already exists
-    const existingUser = await findUser('email', req.body.email);
-    if (existingUser) {
-      return res.status(409).send({ msg: 'User already exists' });
-    }
-
-    // Create new user
+  if (await findUser('email', req.body.email)) {
+    res.status(409).send({ msg: 'Existing user' });
+  } else {
     const user = await createUser(req.body.email, req.body.password);
-    
-    // Set authentication cookie
+
     setAuthCookie(res, user.token);
-    
-    // Send response
-    res.status(201).send({ email: user.email });
-  } catch (err) {
-    console.error('User creation error:', err);
-    res.status(500).send({ msg: 'Failed to create user', error: err.message });
+    res.send({ email: user.email });
   }
 });
 
 // Login an existing user
 apiRouter.post('/auth/login', async (req, res) => {
-  const user = await findUser('username', req.body.username);
-  if (user && await bcrypt.compare(req.body.password, user.password)) {
-    const newToken = uuid.v4();
-    await usersCollection().updateOne(
-      { username: user.username },
-      { $set: { token: newToken } }
-    );
-    setAuthCookie(res, newToken);
-    res.send({ username: user.username });
-  } else {
-    res.status(401).send({ msg: 'Unauthorized' });
+  const user = await findUser('email', req.body.email);
+  if (user) {
+    if (await bcrypt.compare(req.body.password, user.password)) {
+      user.token = uuid.v4();
+      await DB.updateUser(user);
+      setAuthCookie(res, user.token);
+      res.send({ email: user.email });
+      return;
+    }
   }
+  res.status(401).send({ msg: 'Unauthorized' });
 });
 
 // Logout a user
 apiRouter.delete('/auth/logout', async (req, res) => {
-  try {
-    const user = await findUser('token', req.cookies[authCookieName]);
-    if (user) {
-      await DB.updateUserToken(user.email, null); // Clear the token in the database
-    }
-    res.clearCookie(authCookieName);
-    res.status(204).end();
-  } catch (err) {
-    res.status(500).send({ msg: 'Failed to log out', error: err.message });
+  const user = await findUser('token', req.cookies[authCookieName]);
+  if (user) {
+    delete user.token;
+    DB.updateUser(user);
   }
+  res.clearCookie(authCookieName);
+  res.status(204).end();
 });
 
 // Get all movies
@@ -125,7 +109,6 @@ apiRouter.delete('/movies/:id', verifyAuth, async (req, res) => {
 
 // Default error handler
 app.use((err, req, res, next) => {
-  console.error(err.stack);
   res.status(500).send({ type: err.name, message: err.message });
 });
 
