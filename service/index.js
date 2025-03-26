@@ -160,7 +160,7 @@ async function findUser(field, value) {
 
 function setAuthCookie(res, authToken) {
   res.cookie(authCookieName, authToken, {
-    secure: false,
+    secure: process.env.NODE_ENV === 'production', // true for production, false for development
     httpOnly: true,
     sameSite: 'strict',
   });
