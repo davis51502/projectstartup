@@ -55,12 +55,12 @@ export default function Discover() {
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include', // Include cookies for authentication
+        credentials: 'include', // CRUCIAL: Include cookies for authentication
         body: JSON.stringify({
           title: movie.title,
           poster: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
           addedAt: new Date().toISOString(),
-          tmdbId: movie.id, // Add TMDB ID to prevent duplicates
+          tmdbId: movie.id,
           overview: movie.overview,
           rating: movie.vote_average
         }),
@@ -73,9 +73,10 @@ export default function Discover() {
       
       const responseData = await response.json();
       setSuccessMessage(`"${movie.title}" added to your watchlist!`);
-      setTimeout(() => setSuccessMessage(''), 3000); // Clear the success message after 3 seconds
+      setTimeout(() => setSuccessMessage(''), 3000);
     } catch (err) {
       setError(err.message);
+      console.error('Add to watchlist error:', err);
     }
   };
 

@@ -8,8 +8,6 @@ const DB = require('./database.js');
 
 const authCookieName = 'token';
 
-// In-memory storage for users and movies
-
 // The service port
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
@@ -24,14 +22,54 @@ app.use(express.static('public'));
 const apiRouter = express.Router();
 app.use('/api', apiRouter);
 
+// Middleware to verify authentication
+const verifyAuth = async (req, res, next) => {
+  try {
+    console.log('Full Cookies:', req.cookies);
+    console.log('Auth Cookie:', req.cookies[authCookieName]);
+
+    // If no token cookie exists, immediately reject
+    if (!req.cookies[authCookieName]) {
+      console.log('No authentication token found');
+      return res.status(401).send({ msg: 'No authentication token' });
+    }
+
+    const user = await findUser('token', req.cookies[authCookieName]);
+    
+    if (user) {
+      console.log('Authenticated user:', user.email);
+      req.user = user; // Attach user to request for potential further use
+      next();
+    } else {
+      console.log('Authentication failed: Invalid token');
+      res.status(401).send({ msg: 'Invalid authentication token' });
+    }
+  } catch (err) {
+    console.error('Authentication error:', err);
+    res.status(500).send({ msg: 'Authentication failed', error: err.message });
+  }
+};
+
 // Create a new user
 apiRouter.post('/auth/create', async (req, res) => {
-  if (await findUser('email', req.body.email)) {
-    res.status(409).send({ msg: 'User already exists' });
-  } else {
+  try {
+    // Check if user already exists
+    const existingUser = await findUser('email', req.body.email);
+    if (existingUser) {
+      return res.status(409).send({ msg: 'User already exists' });
+    }
+
+    // Create new user
     const user = await createUser(req.body.email, req.body.password);
+    
+    // Set authentication cookie
     setAuthCookie(res, user.token);
-    res.send({ email: user.email });
+    
+    // Send response
+    res.status(201).send({ email: user.email });
+  } catch (err) {
+    console.error('User creation error:', err);
+    res.status(500).send({ msg: 'Failed to create user', error: err.message });
   }
 });
 
@@ -39,16 +77,32 @@ apiRouter.post('/auth/create', async (req, res) => {
 apiRouter.post('/auth/login', async (req, res) => {
   try {
     const user = await findUser('email', req.body.email);
-    if (user && (await bcrypt.compare(req.body.password, user.password))) {
-      const token = uuid.v4();
-      await DB.updateUserToken(user.email, token);
-      setAuthCookie(res, token);
-      res.send({ email: user.email });
-    } else {
-      res.status(401).send({ msg: 'Unauthorized' });
+    
+    if (!user) {
+      return res.status(401).send({ msg: 'User not found' });
     }
-  } catch (err){
-    res.status(500).send({ msg: 'Internal server error', error: err.message });
+
+    // Compare passwords
+    const isPasswordValid = await bcrypt.compare(req.body.password, user.password);
+    
+    if (!isPasswordValid) {
+      return res.status(401).send({ msg: 'Invalid credentials' });
+    }
+
+    // Generate new token
+    const newToken = uuid.v4();
+    
+    // Update user's token in database
+    await DB.updateUserToken(user.email, newToken);
+    
+    // Set authentication cookie
+    setAuthCookie(res, newToken);
+    
+    // Send response
+    res.send({ email: user.email });
+  } catch (err) {
+    console.error('Login error:', err);
+    res.status(500).send({ msg: 'Login failed', error: err.message });
   }
 });
 
@@ -66,24 +120,6 @@ apiRouter.delete('/auth/logout', async (req, res) => {
   }
 });
 
-// Middleware to verify authentication
-const verifyAuth = async (req, res, next) => {
-  try {
-    console.log('Cookies:', req.cookies); // Log cookies for debugging
-    const user = await findUser('token', req.cookies[authCookieName]);
-    if (user) {
-      console.log('Authenticated user:', user.email); // Log authenticated user
-      next();
-    } else {
-      console.log('Authentication failed: No user found');
-      res.status(401).send({ msg: 'Unauthorized' });
-    }
-  } catch (err) {
-    console.error('Authentication error:', err.message); // Log the error
-    res.status(500).send({ msg: 'Authentication failed', error: err.message });
-  }
-};
-
 // Get all movies
 apiRouter.get('/movies', verifyAuth, async (_req, res) => {
   try {
@@ -98,10 +134,29 @@ apiRouter.get('/movies', verifyAuth, async (_req, res) => {
 apiRouter.post('/movies', verifyAuth, async (req, res) => {
   try {
     const movie = req.body;
+    
+    // Validate movie data
+    if (!movie.title) {
+      return res.status(400).send({ msg: 'Movie title is required' });
+    }
+
     const addedMovie = await DB.addMovie(movie);
-    res.send({ msg: 'Movie added successfully', movie: addedMovie });
+    res.status(201).send({ 
+      msg: 'Movie added successfully', 
+      movie: addedMovie.insertedId 
+    });
   } catch (err) {
-    res.status(500).send({ msg: 'Failed to add movie', error: err.message });
+    console.error('Movie addition error:', err);
+    
+    // Check for duplicate movie error
+    if (err.message === 'Movie already exists in watchlist') {
+      return res.status(409).send({ msg: err.message });
+    }
+
+    res.status(500).send({ 
+      msg: 'Failed to add movie', 
+      error: err.message 
+    });
   }
 });
 
@@ -149,17 +204,18 @@ async function findUser(field, value) {
   if (!value) return null;
 
   if (field === 'token') {
-    return DB.getUserByToken(value);
+    return await DB.getUserByToken(value);
   }
-  let user = DB.getUser(value); 
-  return user;
+  
+  return await DB.getUser(value);
 }
 
 function setAuthCookie(res, authToken) {
   res.cookie(authCookieName, authToken, {
-    secure: false,
+    secure: process.env.NODE_ENV === 'production', // Only secure in production
     httpOnly: true,
     sameSite: 'strict',
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
   });
 }
 

@@ -1,4 +1,4 @@
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 const config = require('./dbConfig.json');
 
 const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostname}`;
@@ -12,83 +12,64 @@ const collection = db.collection('movies');
 async function main() {
   try {
     // Test that you can connect to the database
+    await client.connect();
     await db.command({ ping: 1 });
     console.log(`DB connected to ${config.hostname}`);
   } catch (ex) {
     console.log(`Connection failed to ${url} because ${ex.message}`);
     process.exit(1);
   }
-
-  try {
-    // Insert a movie document
-    const movie = {
-      title: 'Inception',
-      director: 'Christopher Nolan',
-      genre: 'Sci-Fi',
-      year: 2010,
-      rating: 8.8,  
-    };
-    await collection.insertOne(movie);
-    console.log('Movie inserted:', movie);
-
-    // Query the movies
-    const query = { genre: 'Sci-Fi', rating: { $gte: 8 } };
-    const options = {
-      sort: { year: -1 },
-      limit: 5,
-    };
-    const cursor = collection.find(query, options);
-    const movies = await cursor.toArray();
-    console.log('Movies found:');
-    movies.forEach((m) => console.log(m));
-
-    // Delete movies matching the query
-    const deleteResult = await collection.deleteMany(query);
-    console.log(`${deleteResult.deletedCount} movie(s) deleted.`);
-  } catch (ex) {
-    console.log(`Database (${url}) error: ${ex.message}`);
-  } finally {
-    console.log('keep connection');
-  }
 }
 
 function getUser(email) {
-    return userCollection.findOne({ email: email });
+  return userCollection.findOne({ email: email });
+}
+
+function getUserByToken(token) {
+  return userCollection.findOne({ token: token });
+}
+
+async function addUser(user) {
+  await userCollection.insertOne(user);
+}
+
+async function updateUserToken(email, token) {
+  await userCollection.updateOne(
+    { email: email }, 
+    { $set: { token: token } }
+  );
+}
+
+async function addMovie(movie) {
+  // Check if movie with the same TMDB ID already exists
+  const existingMovie = await collection.findOne({ tmdbId: movie.tmdbId });
+  
+  if (existingMovie) {
+    throw new Error('Movie already exists in watchlist');
   }
   
-  function getUserByToken(token) {
-    return userCollection.findOne({ token: token });
-  }
-  
+  return await collection.insertOne(movie);
+}
 
-  async function addUser(user) {
-    await userCollection.insertOne(user);
-  }
-  
+async function getMovies(query = {}, options = {}) {
+  const cursor = collection.find(query, options);
+  return cursor.toArray();
+}
 
-  async function updateUser(user) {
-    await userCollection.updateOne({ email: user.email }, { $set: user });
-  }
-  async function addMovie(movie) {
-    const result = await collection.insertOne(movie);
-    return result.ops[0];
-  }
-  async function getMovies(query = {}, options = {}) {
-    const cursor = collection.find(query, options);
-    return cursor.toArray();
-  }
-  async function deleteMovieById(movieId) {
-    const result = await movieCollection.deleteOne({ _id: new MongoClient.ObjectId(movieId) });
-    return result.deletedCount > 0;
-  }
+async function deleteMovieById(movieId) {
+  const result = await collection.deleteOne({ _id: new ObjectId(movieId) });
+  return result.deletedCount;
+}
 
-  module.exports = {
-    getUser,
-    getUserByToken,
-    addUser,
-    updateUser, 
-    addMovie, 
-    getMovies, 
-    deleteMovieById
-  };
-main();
+module.exports = {
+  getUser,
+  getUserByToken,
+  addUser,
+  updateUserToken,
+  addMovie, 
+  getMovies, 
+  deleteMovieById
+};
+
+// Connect to database when module is imported
+main().catch(console.error);
