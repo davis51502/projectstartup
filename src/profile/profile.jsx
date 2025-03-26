@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import { Link } from 'react-router-dom';
 
 export default function Profile() {
   const [username, setUsername] = useState('Username');
@@ -113,9 +114,10 @@ export default function Profile() {
         <div className="row g-4">
           <div className="col-12 text-center text-muted">
             <p>No favorite movies added yet.</p>
-            <a href="/discover" className="btn btn-primary">
-              <i className="fas fa-search me-2"></i>Discover Movies
-            </a>
+            <div className="d-grid gap-2">
+            <Link to="/discover" className="btn btn-primary"><i className="fas fa-search me-2"></i>
+    Discover Movies!
+  </Link></div>
           </div>
         </div>
       </section>

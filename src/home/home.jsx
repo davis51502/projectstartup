@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import movieQuote from 'popular-movie-quotes';
 import './home.css';
+import {Link} from 'react-router-dom';
 
 export default function Home() {
   const [quotes, setQuotes] = useState([]);
@@ -18,7 +19,9 @@ export default function Home() {
       <section className="discover-section container py-5">
         <h1 className="mb-4">Discover Your Next Favorite Movie</h1>
         <div className="text-center mb-4">
-          <a href="/discover" className="btn btn-primary">Discover Now!</a>
+        <Link to="/discover" className="btn btn-primary">
+    Discover Now!
+  </Link>
         </div>
         <div className="card shadow-sm mb-4"></div>
         <div className="movie-grid row g">
