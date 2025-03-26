@@ -147,11 +147,12 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **User registration** - I did not complete this part of the deliverable.
-- [ ] **User login and logout** - I did not complete this part of the deliverable.
-- [ ] **Stores data in MongoDB** - I did not complete this part of the deliverable.
-- [ ] **Stores credentials in MongoDB** - I did not complete this part of the deliverable.
-- [ ] **Restricts functionality based on authentication** - I did not complete this part of the deliverable.
+- [x] **User registration** - Implemented a registration form that allows users to create an account by providing a username and password. 
+- [x] **User login and logout** - Developed a login system where users can authenticate using their credentials. Added a logout feature that clears the session and redirects the user to the login page.
+- [x] **Stores data in MongoDB** - Configured a MongoDB database to store user profiles, including their username, email, and hashed passwords. Movie ratings and watchlists are also stored in the database.
+- [x] **Stores credentials in MongoDB** - Used bcrypt to hash user passwords before storing them in the database. Ensured that sensitive data is securely handled.
+- [x] **Restricts functionality based on authentication** - Implemented middleware to restrict access to certain routes and features unless the user is authenticated. For example, users must be logged in to access their watchlist or rate movies.
+
 
 ## 🚀 WebSocket deliverable
 

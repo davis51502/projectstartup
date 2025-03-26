@@ -131,3 +131,25 @@ server.listen(3000, () => {
 ```
 - Run the server with `node server.js`.
 - Access it in the browser at `http://localhost:3000/`.
+
+
+3/25/25
+## 🌟 What I Learned
+
+Throughout the development of Movie Ratings Hub, I gained valuable insights and skills:
+
+- **Markdown Best Practices**: Learned how to structure and format Markdown documents effectively, including embedding images and creating lists for deliverables.
+
+- **Frontend Development**: Improved my understanding of responsive design using CSS and Bootstrap. Learned how to create dynamic and interactive components with React.
+
+- **Backend Development**: Gained experience in setting up a Node.js/Express server, creating RESTful API endpoints, and integrating third-party APIs.
+
+- **Database Management**: Learned how to securely store and retrieve data using MongoDB, including implementing user authentication with hashed passwords.
+
+- **Real-Time Features**: Explored the basics of WebSocket connections and their potential for real-time updates, even though this part is still a work in progress.
+
+- **Project Organization**: Enhanced my ability to break down a project into deliverables, track progress, and document work effectively for grading and collaboration.
+
+- **Full-Stack Integration**: Strengthened my ability to connect the frontend and backend seamlessly, ensuring smooth communication between components.
+
+These lessons have significantly improved my technical skills and prepared me for future development challenges.
