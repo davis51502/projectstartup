@@ -68,13 +68,17 @@ apiRouter.delete('/auth/logout', async (req, res) => {
 // Middleware to verify authentication
 const verifyAuth = async (req, res, next) => {
   try {
+    console.log('Cookies:', req.cookies); // Log cookies for debugging
     const user = await findUser('token', req.cookies[authCookieName]);
     if (user) {
+      console.log('Authenticated user:', user.email); // Log authenticated user
       next();
     } else {
+      console.log('Authentication failed: No user found');
       res.status(401).send({ msg: 'Unauthorized' });
     }
   } catch (err) {
+    console.error('Authentication error:', err.message); // Log the error
     res.status(500).send({ msg: 'Authentication failed', error: err.message });
   }
 };
@@ -152,7 +156,7 @@ async function findUser(field, value) {
 
 function setAuthCookie(res, authToken) {
   res.cookie(authCookieName, authToken, {
-    secure: true,
+    secure: false,
     httpOnly: true,
     sameSite: 'strict',
   });

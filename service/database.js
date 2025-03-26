@@ -69,10 +69,26 @@ function getUser(email) {
   async function updateUser(user) {
     await userCollection.updateOne({ email: user.email }, { $set: user });
   }
+  async function addMovie(movie) {
+    const result = await collection.insertOne(movie);
+    return result.ops[0];
+  }
+  async function getMovies(query = {}, options = {}) {
+    const cursor = collection.find(query, options);
+    return cursor.toArray();
+  }
+  async function deleteMovieById(movieId) {
+    const result = await movieCollection.deleteOne({ _id: new MongoClient.ObjectId(movieId) });
+    return result.deletedCount > 0;
+  }
+
   module.exports = {
     getUser,
     getUserByToken,
     addUser,
-    updateUser
+    updateUser, 
+    addMovie, 
+    getMovies, 
+    deleteMovieById
   };
 main();

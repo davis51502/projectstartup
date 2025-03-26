@@ -6,15 +6,16 @@ export default function Discover() {
   const [movies, setMovies] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState('');
 
   // Fetch popular movies from the API
   const fetchMovies = async () => {
     try {
       const response = await fetch(
-        "https://api.themoviedb.org/3/movie/popular?api_key=731742d20f056a3dd4063b57224a7951"
+        'https://api.themoviedb.org/3/movie/popular?api_key=731742d20f056a3dd4063b57224a7951'
       );
       if (!response.ok) {
-        throw new Error("Failed to fetch movies");
+        throw new Error('Failed to fetch movies');
       }
       const data = await response.json();
       setMovies(data.results);
@@ -23,10 +24,10 @@ export default function Discover() {
     }
   };
 
-  // Fetch movies based on search query
+  // Search for movies based on user input
   const searchMovies = async (query) => {
     if (!query) {
-      fetchMovies(); // If the query is empty, fetch popular movies
+      fetchMovies();
       return;
     }
 
@@ -37,10 +38,35 @@ export default function Discover() {
         )}`
       );
       if (!response.ok) {
-        throw new Error("Failed to search movies");
+        throw new Error('Failed to search movies');
       }
       const data = await response.json();
       setMovies(data.results);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  // Add a movie to the watchlist
+  const addToWatchlist = async (movie) => {
+    try {
+      const response = await fetch('/api/movies', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include', // Include cookies for authentication
+        body: JSON.stringify({
+          title: movie.title,
+          poster: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+          addedAt: new Date().toISOString(),
+        }),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to add movie to watchlist');
+      }
+      setSuccessMessage(`"${movie.title}" added to your watchlist!`);
+      setTimeout(() => setSuccessMessage(''), 3000); // Clear the success message after 3 seconds
     } catch (err) {
       setError(err.message);
     }
@@ -50,7 +76,6 @@ export default function Discover() {
     fetchMovies();
   }, []);
 
-  // Handle search input change
   const handleSearchChange = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
@@ -61,6 +86,8 @@ export default function Discover() {
     <main>
       <section className="discover-section container py-5">
         <h1 className="mb-4">Discover New Movies</h1>
+        {successMessage && <p className="text-success">{successMessage}</p>}
+        {error && <p className="text-danger">{error}</p>}
         <div className="card shadow-sm mb-4">
           <div className="card-body">
             <div className="row g-3">
@@ -81,9 +108,6 @@ export default function Discover() {
             </div>
           </div>
         </div>
-        <div className="text-center mb-4">
-          <a href="/watchlist" className="btn btn-primary">Go to Watchlist</a>
-        </div>
       </section>
 
       <section className="container mb-5">
@@ -91,7 +115,7 @@ export default function Discover() {
           {movies.length > 0 ? (
             movies.map((movie) => (
               <div key={movie.id} className="col-md-3">
-                <div className="card">
+                <div className="card h-100 shadow-sm">
                   <img
                     src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                     className="card-img-top"
@@ -102,6 +126,12 @@ export default function Discover() {
                     <p className="card-text">
                       Rating: {movie.vote_average.toFixed(1)}
                     </p>
+                    <button
+                      className="btn btn-outline-primary w-100"
+                      onClick={() => addToWatchlist(movie)}
+                    >
+                      Add to Watchlist
+                    </button>
                   </div>
                 </div>
               </div>
