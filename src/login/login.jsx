@@ -17,7 +17,7 @@ export function Login({ userName, authState, onAuthChange, onSignUpClick }) {
           >
             <div className="card-body">
               <h5 className="card-title fs-1">
-                Welcome! Please log in to continue.
+                Welcome! Please log in.
               </h5>
             </div>
           </div>
