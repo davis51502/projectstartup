@@ -5,6 +5,7 @@ const uuid = require('uuid');
 const app = express();
 const path = require('path');
 const DB = require('./database.js');
+const { peerProxy } = require('./peerProxy.js');
 
 const authCookieName = 'token';
 
@@ -151,6 +152,8 @@ function setAuthCookie(res, authToken) {
 }
 
 // Start the server
-app.listen(port, () => {
+const httpService = app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
+
+peerProxy(httpService);

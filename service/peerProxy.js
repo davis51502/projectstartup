@@ -32,3 +32,5 @@ const { WebSocketServer } = require("ws");
      });
    }, 10000);
  }
+
+ module.exports = {peerProxy};
