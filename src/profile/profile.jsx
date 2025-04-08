@@ -4,21 +4,23 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import { Link } from 'react-router-dom';
 
 export default function Profile() {
-  const [username, setUsername] = useState('Username');
-  const [memberSince, setMemberSince] = useState('January 2025');
-  const [moviesRated, setMoviesRated] = useState(0);
-  const [watchlistCount, setWatchlistCount] = useState(0);
-  const [achievements, setAchievements] = useState(0);
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState('');
+  const ws = useRef(null);
 
   useEffect(() => {
-    // Mock data fetching
-    const userData = {
-      username: 'Username',
-      memberSince: 'January 2025',
-      moviesRated: 10,
-      watchlistCount: 5,
-      achievements: 3,
+    // Establish WebSocket connection
+    ws.current = new WebSocket('ws://localhost:4000/ws');
+
+    ws.current.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      setMessages((prevMessages) => [...prevMessages, message]);
     };
+
+    ws.current.onclose = () => console.log('WebSocket disconnected');
+
+    return () => ws.current.close();
+  }, []);
 
     setUsername(userData.username);
     setMemberSince(userData.memberSince);
