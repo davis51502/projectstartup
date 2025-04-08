@@ -191,32 +191,9 @@ export default function Profile() {
                   alt="Profile"
                   style={{ width: '100px', height: '100px', objectFit: 'cover' }}
                 />
-                <button className="btn btn-sm btn-primary position-absolute bottom-0 end-0">
-                  <i className="fas fa-camera"></i>
-                </button>
+
+                <h4>"I know this world is just a game, but this place, these people, that's all I have. So I'm not gonna be the good guy. I'm gonna be a great guy." -Guy</h4>
               </div>
-              <h4 className="mb-2">{username}</h4>
-            </div>
-          </div>
-          
-          {/* Watchlist preview */}
-          <div className="card shadow-sm mb-4">
-            <div className="card-header bg-white d-flex justify-content-between align-items-center">
-              <h5 className="mb-0">Watchlist</h5>
-              <Link to="/watchlist" className="btn btn-sm btn-link">See All</Link>
-            </div>
-            <div className="card-body">
-              {watchlistCount > 0 ? (
-                <div></div>
-              ) : (
-                <div className="text-center py-3">
-                  <i className="fas fa-film fa-2x text-muted mb-2"></i>
-                  <p className="mb-2">Your watchlist is empty</p>
-                  <Link to="/discover" className="btn btn-sm btn-primary">
-                    <i className="fas fa-search me-1"></i>Discover Movies
-                  </Link>
-                </div>
-              )}
             </div>
           </div>
         </div>
