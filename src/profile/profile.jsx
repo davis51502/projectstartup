@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
-// WebSocket client class (same logic as your working example)
+// WebSocket client class
 class ChatClient {
   observers = [];
   connected = false;
@@ -13,7 +13,7 @@ class ChatClient {
     this.socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
 
     this.socket.onopen = () => {
-      this.notifyObservers('system', 'websocket', 'connected');
+      this.notifyObservers('system', 'System', 'Connected to chat');
       this.connected = true;
     };
 
@@ -24,13 +24,13 @@ class ChatClient {
     };
 
     this.socket.onclose = () => {
-      this.notifyObservers('system', 'websocket', 'disconnected');
+      this.notifyObservers('system', 'System', 'Disconnected from chat');
       this.connected = false;
     };
   }
 
   sendMessage(name, msg) {
-    this.notifyObservers('sent', 'me', msg);
+    this.notifyObservers('sent', 'Me', msg);
     this.socket.send(JSON.stringify({ name, msg }));
   }
 
@@ -53,12 +53,28 @@ export default function Profile() {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [chatClient] = useState(() => new ChatClient());
+  const [activeUsers] = useState(['FilmFan88', 'DirectorsCut', 'SciFiLover']);
+  const [chatExpanded, setChatExpanded] = useState(true);
+  
+  const messagesEndRef = useRef(null);
+  const chatContainerRef = useRef(null);
 
   useEffect(() => {
     chatClient.addObserver((chat) => {
       setMessages((prev) => [...prev, chat]);
     });
+    
+    // Add some initial messages for demonstration
+    setTimeout(() => {
+      chatClient.notifyObservers('received', 'FilmFan88', 'Has anyone seen the new Marvel movie?');
+      chatClient.notifyObservers('received', 'DirectorsCut', 'The cinematography was amazing!');
+    }, 1000);
   }, [chatClient]);
+
+  useEffect(() => {
+    // Scroll to the bottom when new messages arrive
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   const sendMsg = () => {
     if (message.trim() && chatClient.connected) {
@@ -67,101 +83,144 @@ export default function Profile() {
     }
   };
 
+  const toggleChatSize = () => {
+    setChatExpanded(!chatExpanded);
+  };
+
   return (
-    <main className="container py-5 mt-5">
+    <main className="container-fluid py-3">
       <div className="row">
-        <div className="col-lg-4 mb-4">
-          <div className="card shadow-sm text-center">
+        {/* Chat as the main feature - now takes up more space */}
+        <div className={`${chatExpanded ? 'col-lg-9' : 'col-lg-6'} order-lg-2`}>
+          <div className="card shadow mb-4">
+            <div className="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+              <h3 className="mb-0">Community Chat</h3>
+              <div>
+                <button 
+                  className="btn btn-sm btn-light me-2" 
+                  onClick={toggleChatSize}
+                  title={chatExpanded ? "Shrink chat" : "Expand chat"}
+                >
+                  <i className={`fas fa-${chatExpanded ? 'compress-alt' : 'expand-alt'}`}></i>
+                </button>
+              </div>
+            </div>
+            
+            {/* Chat messages */}
+            <div 
+              ref={chatContainerRef}
+              className="card-body" 
+              style={{ height: '450px', overflowY: 'auto', backgroundColor: '#f8f9fa' }}
+            >
+              {messages.length > 0 ? (
+                messages.map((chat, idx) => (
+                  <div 
+                    key={idx} 
+                    className={`mb-2 p-2 rounded ${
+                      chat.event === 'sent' 
+                        ? 'bg-primary text-white ms-auto' 
+                        : chat.event === 'system' 
+                        ? 'bg-secondary text-white text-center mx-auto' 
+                        : 'bg-white border'
+                    }`}
+                    style={{ 
+                      maxWidth: '80%', 
+                      width: 'fit-content',
+                      wordBreak: 'break-word'
+                    }}
+                  >
+                    <div className="fw-bold">{chat.from}</div>
+                    <div>{chat.msg}</div>
+                    <small className="text-end d-block opacity-75">
+                      {new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                    </small>
+                  </div>
+                ))
+              ) : (
+                <div className="text-center text-muted mt-5">
+                  <i className="fas fa-comments fa-3x mb-3"></i>
+                  <p>No messages yet. Start the conversation!</p>
+                </div>
+              )}
+              <div ref={messagesEndRef} />
+            </div>
+            
+            {/* Message input */}
+            <div className="card-footer">
+              <div className="input-group">
+                <input
+                  className="form-control"
+                  type="text"
+                  placeholder="Type your message..."
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && sendMsg()}
+                  disabled={!chatClient.connected}
+                />
+                <button 
+                  className="btn btn-primary" 
+                  onClick={sendMsg} 
+                  disabled={!chatClient.connected || !message.trim()}
+                >
+                  <i className="fas fa-paper-plane me-1"></i> Send
+                </button>
+              </div>
+              
+              {/* Connection status */}
+              <div className="d-flex align-items-center mt-2">
+                <div className={`spinner-grow spinner-grow-sm ${chatClient.connected ? 'text-success' : 'text-danger'}`} role="status" style={{width: '8px', height: '8px'}}></div>
+                <small className="ms-1 text-muted">
+                  {chatClient.connected ? 'Connected' : 'Disconnected'}
+                </small>
+                <div className="ms-auto">
+                  <small className="text-muted">Press Enter to send</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Profile section - now secondary and takes less space */}
+        <div className={`${chatExpanded ? 'col-lg-3' : 'col-lg-6'} order-lg-1 mb-4`}>
+          <div className="card shadow-sm text-center mb-4">
             <div className="card-body">
-              <div className="position-relative mb-4">
+              <div className="position-relative mb-3">
                 <img
                   src="/profilePicMan.jpeg"
                   className="rounded-circle img-thumbnail"
                   alt="Profile"
-                  style={{ width: '150px', height: '150px', objectFit: 'cover' }}
+                  style={{ width: '100px', height: '100px', objectFit: 'cover' }}
                 />
                 <button className="btn btn-sm btn-primary position-absolute bottom-0 end-0">
                   <i className="fas fa-camera"></i>
                 </button>
               </div>
-              <h3 className="mb-3">{username}</h3>
-              <p className="text-muted mb-4">
-                <i className="far fa-calendar-alt me-2"></i>Member since {memberSince}
-              </p>
-              <button className="btn btn-primary">
-                <i className="fas fa-edit me-2"></i>Edit Profile
-              </button>
+              <h4 className="mb-2">{username}</h4>
             </div>
           </div>
-        </div>
-
-        <div className="col-lg-8">
-          <div className="row g-3 mb-4">
-            <StatCard icon="star" title="Movies Rated" value={moviesRated} color="text-warning" />
-            <StatCard icon="list" title="Watchlist" value={watchlistCount} color="text-primary" />
-            <StatCard icon="trophy" title="Achievements" value={achievements} color="text-success" />
-          </div>
-
-          {/* WebSocket Chat Section */}
+          
+          {/* Watchlist preview */}
           <div className="card shadow-sm mb-4">
-            <div className="card-header bg-white">
-              <h4 className="mb-0">Community Chat</h4>
+            <div className="card-header bg-white d-flex justify-content-between align-items-center">
+              <h5 className="mb-0">Watchlist</h5>
+              <Link to="/watchlist" className="btn btn-sm btn-link">See All</Link>
             </div>
-            <div className="card-body" style={{ maxHeight: '300px', overflowY: 'auto' }}>
-              {messages.length > 0 ? (
-                messages.map((chat, idx) => (
-                  <div key={idx} className="mb-1">
-                    <strong className={chat.event}>{chat.from}</strong>: {chat.msg}
-                  </div>
-                ))
+            <div className="card-body">
+              {watchlistCount > 0 ? (
+                <div></div>
               ) : (
-                <p className="text-muted">No messages yet. Say hi!</p>
+                <div className="text-center py-3">
+                  <i className="fas fa-film fa-2x text-muted mb-2"></i>
+                  <p className="mb-2">Your watchlist is empty</p>
+                  <Link to="/discover" className="btn btn-sm btn-primary">
+                    <i className="fas fa-search me-1"></i>Discover Movies
+                  </Link>
+                </div>
               )}
             </div>
-            <div className="card-footer d-flex">
-              <input
-                className="form-control me-2"
-                type="text"
-                placeholder="Type your message..."
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && sendMsg()}
-                disabled={!chatClient.connected}
-              />
-              <button className="btn btn-primary" onClick={sendMsg} disabled={!chatClient.connected || !message}>
-                Send
-              </button>
-            </div>
           </div>
         </div>
       </div>
-
-      <section className="mt-5">
-        <h4 className="mb-4">Favorite Movies</h4>
-        <div className="row g-4">
-          <div className="col-12 text-center text-muted">
-            <p>No favorite movies added yet.</p>
-            <Link to="/discover" className="btn btn-primary">
-              <i className="fas fa-search me-2"></i>
-              Discover Movies!
-            </Link>
-          </div>
-        </div>
-      </section>
     </main>
-  );
-}
-
-function StatCard({ icon, title, value, color }) {
-  return (
-    <div className="col-sm-6 col-md-4">
-      <div className="card shadow-sm text-center h-100">
-        <div className="card-body">
-          <i className={`fas fa-${icon} ${color} mb-2`} style={{ fontSize: '24px' }}></i>
-          <h5 className="card-title mb-0">{title}</h5>
-          <p className="display-6 mb-0">{value}</p>
-        </div>
-      </div>
-    </div>
   );
 }
