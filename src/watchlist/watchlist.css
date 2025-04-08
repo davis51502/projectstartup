@@ -47,16 +47,9 @@
     padding: 0 1rem;
 }
 
-@media (min-width: 768px) {
-    .col-md-6.col-lg-4 {
-        flex: 0 0 45%;
-        max-width: 45%;
-    }
-}
-
-@media (min-width: 992px) {
-    .col-md-6.col-lg-4 {
-        flex: 0 0 30%;
-        max-width: 30%;
-    }
+.col-md-6.col-lg-4 {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 350px;
+    min-width: 280px;
 }
