@@ -153,3 +153,14 @@ Throughout the development of Movie Ratings Hub, I gained valuable insights and 
 - **Full-Stack Integration**: Strengthened my ability to connect the frontend and backend seamlessly, ensuring smooth communication between components.
 
 These lessons have significantly improved my technical skills and prepared me for future development challenges.
+
+**For Websocket**
+1.Persistent Connection: Maintains a single, long-lived connection after initial HTTP handshake
+2.Full-Duplex Communication: Allows simultaneous bidirectional data transmission
+3.Low Latency: Eliminates the overhead of establishing new connections for each message
+4.Real-Time Updates: Enables instant data delivery without polling
+**Connection Process**
+1.Client initiates connection with WebSocket handshake (HTTP upgrade)
+2.Server acknowledges and upgrades the connection
+3.Full-duplex communication channel established
+4.Connection maintained through "ping-pong" mechanism
