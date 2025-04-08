@@ -1,40 +1,78 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import { Link } from 'react-router-dom';
 
-export default function Profile() {
-  const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState('');
-  const ws = useRef(null);
+// WebSocket client class (same logic as your working example)
+class ChatClient {
+  observers = [];
+  connected = false;
 
-  useEffect(() => {
-    // Establish WebSocket connection
-    ws.current = new WebSocket('ws://localhost:4000/ws');
+  constructor() {
+    const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+    this.socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
 
-    ws.current.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      setMessages((prevMessages) => [...prevMessages, message]);
+    this.socket.onopen = () => {
+      this.notifyObservers('system', 'websocket', 'connected');
+      this.connected = true;
     };
 
-    ws.current.onclose = () => console.log('WebSocket disconnected');
+    this.socket.onmessage = async (event) => {
+      const text = await event.data.text();
+      const chat = JSON.parse(text);
+      this.notifyObservers('received', chat.name, chat.msg);
+    };
 
-    return () => ws.current.close();
-  }, []);
+    this.socket.onclose = () => {
+      this.notifyObservers('system', 'websocket', 'disconnected');
+      this.connected = false;
+    };
+  }
 
-    setUsername(userData.username);
-    setMemberSince(userData.memberSince);
-    setMoviesRated(userData.moviesRated);
-    setWatchlistCount(userData.watchlistCount);
-    setAchievements(userData.achievements);
-  }, []);
+  sendMessage(name, msg) {
+    this.notifyObservers('sent', 'me', msg);
+    this.socket.send(JSON.stringify({ name, msg }));
+  }
+
+  addObserver(observer) {
+    this.observers.push(observer);
+  }
+
+  notifyObservers(event, from, msg) {
+    this.observers.forEach((h) => h({ event, from, msg }));
+  }
+}
+
+export default function Profile() {
+  const [username, setUsername] = useState('MovieBuff42');
+  const [memberSince] = useState('March 2023');
+  const [moviesRated] = useState(87);
+  const [watchlistCount] = useState(12);
+  const [achievements] = useState(5);
+
+  const [message, setMessage] = useState('');
+  const [messages, setMessages] = useState([]);
+  const [chatClient] = useState(() => new ChatClient());
+
+  useEffect(() => {
+    chatClient.addObserver((chat) => {
+      setMessages((prev) => [...prev, chat]);
+    });
+  }, [chatClient]);
+
+  const sendMsg = () => {
+    if (message.trim() && chatClient.connected) {
+      chatClient.sendMessage(username, message);
+      setMessage('');
+    }
+  };
 
   return (
     <main className="container py-5 mt-5">
       <div className="row">
         <div className="col-lg-4 mb-4">
-          <div className="card shadow-sm">
-            <div className="card-body text-center">
+          <div className="card shadow-sm text-center">
+            <div className="card-body">
               <div className="position-relative mb-4">
                 <img
                   src="/profilePicMan.jpeg"
@@ -50,62 +88,49 @@ export default function Profile() {
               <p className="text-muted mb-4">
                 <i className="far fa-calendar-alt me-2"></i>Member since {memberSince}
               </p>
-              <div className="d-grid gap-2">
-                <button className="btn btn-primary">
-                  <i className="fas fa-edit me-2"></i>Edit Profile
-                </button>
-              </div>
+              <button className="btn btn-primary">
+                <i className="fas fa-edit me-2"></i>Edit Profile
+              </button>
             </div>
           </div>
         </div>
 
         <div className="col-lg-8">
           <div className="row g-3 mb-4">
-            <div className="col-sm-6 col-md-4">
-              <div className="card shadow-sm text-center h-100">
-                <div className="card-body">
-                  <i className="fas fa-star text-warning mb-2" style={{ fontSize: '24px' }}></i>
-                  <h5 className="card-title mb-0">Movies Rated</h5>
-                  <p className="display-6 mb-0">{moviesRated}</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-4">
-              <div className="card shadow-sm text-center h-100">
-                <div className="card-body">
-                  <i className="fas fa-list text-primary mb-2" style={{ fontSize: '24px' }}></i>
-                  <h5 className="card-title mb-0">Watchlist</h5>
-                  <p className="display-6 mb-0">{watchlistCount}</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-6 col-md-4">
-              <div className="card shadow-sm text-center h-100">
-                <div className="card-body">
-                  <i className="fas fa-trophy text-success mb-2" style={{ fontSize: '24px' }}></i>
-                  <h5 className="card-title mb-0">Achievements</h5>
-                  <p className="display-6 mb-0">{achievements}</p>
-                </div>
-              </div>
-            </div>
+            <StatCard icon="star" title="Movies Rated" value={moviesRated} color="text-warning" />
+            <StatCard icon="list" title="Watchlist" value={watchlistCount} color="text-primary" />
+            <StatCard icon="trophy" title="Achievements" value={achievements} color="text-success" />
           </div>
 
-          <div className="card shadow-sm">
+          {/* WebSocket Chat Section */}
+          <div className="card shadow-sm mb-4">
             <div className="card-header bg-white">
-              <h4 className="mb-0">Recent Activity</h4>
+              <h4 className="mb-0">Community Chat</h4>
             </div>
-            <div className="card-body">
-              <div className="list-group list-group-flush">
-                <div className="list-group-item">
-                  <div className="d-flex justify-content-between align-items-center">
-                    <div>
-                      <span className="badge bg-primary me-2">Just now</span>
-                      <span>Joined Movie Ratings Hub</span>
-                    </div>
-                    <small className="text-muted">Jan 2025</small>
+            <div className="card-body" style={{ maxHeight: '300px', overflowY: 'auto' }}>
+              {messages.length > 0 ? (
+                messages.map((chat, idx) => (
+                  <div key={idx} className="mb-1">
+                    <strong className={chat.event}>{chat.from}</strong>: {chat.msg}
                   </div>
-                </div>
-              </div>
+                ))
+              ) : (
+                <p className="text-muted">No messages yet. Say hi!</p>
+              )}
+            </div>
+            <div className="card-footer d-flex">
+              <input
+                className="form-control me-2"
+                type="text"
+                placeholder="Type your message..."
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && sendMsg()}
+                disabled={!chatClient.connected}
+              />
+              <button className="btn btn-primary" onClick={sendMsg} disabled={!chatClient.connected || !message}>
+                Send
+              </button>
             </div>
           </div>
         </div>
@@ -116,13 +141,27 @@ export default function Profile() {
         <div className="row g-4">
           <div className="col-12 text-center text-muted">
             <p>No favorite movies added yet.</p>
-            <div className="d-grid gap-2">
-            <Link to="/discover" className="btn btn-primary"><i className="fas fa-search me-2"></i>
-    Discover Movies!
-  </Link></div>
+            <Link to="/discover" className="btn btn-primary">
+              <i className="fas fa-search me-2"></i>
+              Discover Movies!
+            </Link>
           </div>
         </div>
       </section>
     </main>
+  );
+}
+
+function StatCard({ icon, title, value, color }) {
+  return (
+    <div className="col-sm-6 col-md-4">
+      <div className="card shadow-sm text-center h-100">
+        <div className="card-body">
+          <i className={`fas fa-${icon} ${color} mb-2`} style={{ fontSize: '24px' }}></i>
+          <h5 className="card-title mb-0">{title}</h5>
+          <p className="display-6 mb-0">{value}</p>
+        </div>
+      </div>
+    </div>
   );
 }
